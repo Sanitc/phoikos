@@ -14,11 +14,6 @@ class _PageMapState extends State<PageMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Phoïkos'),
-        centerTitle: true,
-        backgroundColor: Colors.green,
-      ),
       body: Center(
         child: Container(
           height: 630,
