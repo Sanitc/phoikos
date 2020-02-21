@@ -71,7 +71,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
             Icon(Icons.tag_faces, size: 20),
           ],
           color: Colors.lightGreen,
-          backgroundColor: Colors.white,
+          backgroundColor: Color(0xffE3FFC7),
           buttonBackgroundColor: Colors.lightGreen,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
@@ -82,7 +82,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           },
         ),
         body: Container(
-          color: Colors.white,
+          color: Color(0xffE3FFC7),
           child: Center(
             child: Column(
               children: <Widget>[

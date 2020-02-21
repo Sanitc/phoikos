@@ -11,11 +11,10 @@ class PageMap extends StatefulWidget {
 class _PageMapState extends State<PageMap> {
   Completer<GoogleMapController> _controller = Completer();
 
-  @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 630,
+        height: MediaQuery.of(context).size.height - 60,
         width: MediaQuery.of(context).size.width,
         child: GoogleMap(
           onMapCreated: (GoogleMapController controller) {

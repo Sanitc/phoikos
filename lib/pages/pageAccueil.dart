@@ -6,7 +6,7 @@ class PageAccueil extends StatelessWidget {
     return Center(
       child: Container(
         padding: EdgeInsets.only(top: 20.0),
-        color: Colors.white,
+        color: Color(0xffE3FFC7),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
