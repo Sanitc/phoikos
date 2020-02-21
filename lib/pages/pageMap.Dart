@@ -13,18 +13,16 @@ class _PageMapState extends State<PageMap> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          height: 630,
-          width: MediaQuery.of(context).size.width,
-          child: GoogleMap(
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-            initialCameraPosition: CameraPosition(
-                target: LatLng(48.0973327, -1.6502198), zoom: 11.0),
-          ),
+    return Center(
+      child: Container(
+        height: 630,
+        width: MediaQuery.of(context).size.width,
+        child: GoogleMap(
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          initialCameraPosition: CameraPosition(
+              target: LatLng(48.0973327, -1.6502198), zoom: 11.0),
         ),
       ),
     );
