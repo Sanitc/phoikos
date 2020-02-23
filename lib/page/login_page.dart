@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phoikos/pages/homePage.dart';
-import 'package:phoikos/utilities/constants.dart';
+import 'package:phoikos/page/main_page.dart';
+import 'package:phoikos/utils/constants.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginPageWidget extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginPageWidgetState createState() => _LoginPageWidgetState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageWidgetState extends State<LoginPageWidget> {
   bool _rememberMe = false;
 
   Widget _buildEmailTF() {
@@ -244,9 +244,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void goToHomePage() {
-    Navigator.push(context,
-        new MaterialPageRoute(builder: (BuildContext context) {
-      return new BottomNavBar();
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return MainPageWidget();
     }));
   }
 }
