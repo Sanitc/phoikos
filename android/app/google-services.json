@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "669111751937",
+    "firebase_url": "https://phoikos.firebaseio.com",
+    "project_id": "phoikos",
+    "storage_bucket": "phoikos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669111751937:android:cc1a66eda1cd44a43e3700",
+        "android_client_info": {
+          "package_name": "com.mydigitalproject.phoikos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2-OIXRyq3xlvgbbdWEmNf7CcfRQalmAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
