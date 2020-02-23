@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class PageFavoris extends StatelessWidget {
+class ProfileScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Text(
-      'Favoris',
+      'Profil',
       textScaleFactor: 2.0,
     ));
   }

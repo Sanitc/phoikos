@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class PageMap extends StatefulWidget {
+class MapScreenWidget extends StatefulWidget {
   @override
-  _PageMapState createState() => _PageMapState();
+  _MapScreenWidgetState createState() => _MapScreenWidgetState();
 }
 
-class _PageMapState extends State<PageMap> {
+class _MapScreenWidgetState extends State<MapScreenWidget> {
   Completer<GoogleMapController> _controller = Completer();
 
   Widget build(BuildContext context) {
@@ -22,8 +22,7 @@ class _PageMapState extends State<PageMap> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
-            initialCameraPosition: CameraPosition(
-                target: LatLng(48.0973327, -1.6502198), zoom: 11.0),
+            initialCameraPosition: CameraPosition(target: LatLng(48.0973327, -1.6502198), zoom: 11.0),
           ),
         ),
       ),
