@@ -5,6 +5,7 @@ import 'package:phoikos/screen/home_screen.dart';
 import 'package:phoikos/screen/map_screen.dart';
 import 'package:phoikos/screen/note_screen.dart';
 import 'package:phoikos/screen/profile_screen.dart';
+import 'package:phoikos/utils/colors.dart';
 
 class MainPageWidget extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _MainPageWidgetState extends State<MainPageWidget> {
           Icon(Icons.note, size: 20),
           Icon(Icons.tag_faces, size: 20),
         ],
-        color: Color(0xFFFFFFE3),
+        color: PColors.paleGreen,
         backgroundColor: Color(0xFF90AB77),
         buttonBackgroundColor: Color(0xFFFFFFE3),
         animationCurve: Curves.easeInOut,
