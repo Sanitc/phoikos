@@ -66,9 +66,12 @@ class _MainPageWidgetState extends State<MainPageWidget> {
   }
 
   Widget _widgetWithOpacity(bool visible, Widget child) {
-    return Opacity(
-      opacity: visible ? 1.0 : 0.0,
-      child: child,
+    return IgnorePointer(
+      ignoring: !visible,
+      child: Opacity(
+        opacity: visible ? 1.0 : 0.0,
+        child: child,
+      ),
     );
   }
 }
