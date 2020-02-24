@@ -8,7 +8,8 @@ class MapScreenWidget extends StatefulWidget {
   _MapScreenWidgetState createState() => _MapScreenWidgetState();
 }
 
-class _MapScreenWidgetState extends State<MapScreenWidget> with SingleTickerProviderStateMixin {
+class _MapScreenWidgetState extends State<MapScreenWidget>
+    with SingleTickerProviderStateMixin {
   final Completer<GoogleMapController> _completerController = Completer();
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -46,7 +47,7 @@ class _MapScreenWidgetState extends State<MapScreenWidget> with SingleTickerProv
     MarkerId id = MarkerId('Here something !');
     Marker marker = Marker(
       markerId: id,
-      position: LatLng(48.1168918, -1.68135),
+      position: LatLng(48.1508, -1.6871),
       onTap: () {
         print('marker tapped ');
         setState(() {
@@ -60,7 +61,23 @@ class _MapScreenWidgetState extends State<MapScreenWidget> with SingleTickerProv
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Map',
+            style: TextStyle(
+              color: Colors.white,
+            )),
+        centerTitle: true,
+        backgroundColor: Color(0xFF90AB77),
+        automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              print('click on search');
+            },
+          )
+        ],
+      ),
       body: Stack(
         children: <Widget>[
           GoogleMap(
@@ -76,7 +93,8 @@ class _MapScreenWidgetState extends State<MapScreenWidget> with SingleTickerProv
             onMapCreated: (GoogleMapController controller) {
               _completerController.complete(controller);
             },
-            initialCameraPosition: CameraPosition(target: LatLng(48.0973327, -1.6502198), zoom: 11.0),
+            initialCameraPosition: CameraPosition(
+                target: LatLng(48.1146285, -1.6796229), zoom: 11.0),
             markers: Set<Marker>.of(markers.values),
           ),
           _selectedMarker != null
