@@ -21,6 +21,8 @@ class _MainPageWidgetState extends State<MainPageWidget> {
   final NoteScreenWidget _noteScreenWidget = NoteScreenWidget();
   final ProfileScreenWidget _profileScreenWidget = ProfileScreenWidget();
 
+  //final ArticleScreenWidget _articleScreenWidget = ArticleScreenWidget();
+
   int _pageIndex = 0;
 
   @override

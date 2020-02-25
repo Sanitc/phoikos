@@ -1,6 +1,6 @@
 class Category {
   String name;
-  String title;
+  String image;
 
-  Category(this.name, this.title);
+  Category(this.name, this.image);
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phoikos/model/Category.dart';
+import 'package:phoikos/screen/article_screen.dart';
 
 class HomeScreenWidget extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     super.initState();
 
     for (int i = 0; i < 10; i++) {
-      _categories.add(Category('Name', 'Title'));
+      _categories.add(Category('Category' + '$i', 'assets/images/phoques.jpg'));
     }
   }
 
@@ -39,6 +40,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         ],
       ),
       body: Container(
+        padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -53,7 +55,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           ),
         ),
         child: Column(
-          children: <Widget>[Expanded(child: _gridView())],
+          children: <Widget>[
+            Expanded(child: _gridView()),
+          ],
         ),
       ),
     );
@@ -62,7 +66,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   Widget _categoryWidgetFromModel(Category category) {
     return Card(
       child: Column(
-        children: <Widget>[Text(category.title), Text(category.name)],
+        children: <Widget>[Text(category.name)],
       ),
     );
   }
@@ -73,8 +77,37 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (BuildContext context, int index) {
-        return _categoryWidgetFromModel(_categories[index]);
+        //return _categoryWidgetFromModel(_categories[index]);
+        return new GestureDetector(
+          child: new Card(
+            elevation: 5.0,
+            child: new Container(
+                alignment: Alignment.centerLeft,
+                margin: new EdgeInsets.all(5.0),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      Text(_categories[index].name),
+                      Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Image.asset(_categories[index].image)),
+                    ],
+                  ),
+                )),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ArticleScreenWidget()),
+            );
+          },
+        );
       },
     );
   }
 }
+
+/*
+
+            )
+*/
