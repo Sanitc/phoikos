@@ -1,21 +1,22 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:phoikos/model/Category.dart';
-import 'package:phoikos/page/category_1_page.dart';
+import 'package:phoikos/model/Article.dart';
+import 'package:phoikos/screen/article_screen.dart';
 
-class HomeScreenWidget extends StatefulWidget {
+class Category1PageWidget extends StatefulWidget {
   @override
-  _HomeScreenWidgetState createState() => _HomeScreenWidgetState();
+  _Category1PageWidgetState createState() => _Category1PageWidgetState();
 }
 
-class _HomeScreenWidgetState extends State<HomeScreenWidget> {
-  List<Category> _categories = [];
+class _Category1PageWidgetState extends State<Category1PageWidget> {
+  List<Article> _articles = [];
 
   @override
   void initState() {
     super.initState();
 
     for (int i = 1; i < 11; i++) {
-      _categories.add(Category(i, 'Category ' + '$i',
+      _articles.add(Article(i, 'Article ' + '$i',
           'assets/images/categories/image_' + '$i' + '.jpg'));
     }
   }
@@ -24,13 +25,13 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bonjour user !',
+        title: Text("Category 1",
             style: TextStyle(
               color: Colors.white,
             )),
         centerTitle: true,
         backgroundColor: Color(0xFF90AB77),
-        automaticallyImplyLeading: false,
+        //automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -57,6 +58,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         ),
         child: Column(
           children: <Widget>[
+            //Image.asset('assets/images/categories/image_1.jpg'),
+            /*Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Divider(
+                  color: Colors.black,
+                )),*/
             Expanded(child: _gridView()),
           ],
         ),
@@ -64,17 +71,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     );
   }
 
-  Widget _categoryWidgetFromModel(Category category) {
-    return Card(
-      child: Column(
-        children: <Widget>[Text(category.name)],
-      ),
-    );
-  }
-
   Widget _gridView() {
     return GridView.builder(
-      itemCount: _categories.length,
+      itemCount: _articles.length,
       gridDelegate:
           SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
       itemBuilder: (BuildContext context, int index) {
@@ -89,49 +88,22 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Text(_categories[index].name),
+                    Text(_articles[index].name),
                     Padding(
                         padding: EdgeInsets.all(10.0),
-                        child: Image.asset(_categories[index].image,
+                        child: Image.asset(_articles[index].image,
                             width: 200, height: 100)),
                   ],
                 ),
               )),
           onTap: () {
-            goToCategoryPage(this._categories[index].id);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ArticleScreenWidget()),
+            );
           },
         );
       },
     );
-  }
-
-  void goToCategoryPage(int category) {
-    switch (category) {
-      case 1:
-        {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return Category1PageWidget();
-          }));
-        }
-        break;
-
-      case 2:
-        {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return Category1PageWidget();
-          }));
-        }
-        break;
-
-      default:
-        {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return Category1PageWidget();
-          }));
-        }
-    }
   }
 }

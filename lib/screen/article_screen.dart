@@ -12,7 +12,6 @@ class ArticleScreenWidget extends StatelessWidget {
             )),
         centerTitle: true,
         backgroundColor: Color(0xFF90AB77),
-        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -42,7 +41,7 @@ class ArticleScreenWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.all(25.0),
                 child: Image(
-                  image: AssetImage('assets/images/phoques.jpg'),
+                  image: AssetImage('assets/images/category_1/phoques.jpg'),
                   height: 200,
                   width: 300,
                 ),
