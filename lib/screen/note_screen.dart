@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:phoikos/page/phoikos_team_page.dart';
 
 class NoteScreenWidget extends StatelessWidget {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +14,7 @@ class NoteScreenWidget extends StatelessWidget {
             )),
         centerTitle: true,
         backgroundColor: Color(0xFF90AB77),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -20,6 +23,44 @@ class NoteScreenWidget extends StatelessWidget {
             },
           )
         ],
+      ),
+      drawer: Container(
+        width: 180,
+        child: Drawer(
+          child: Container(
+            color: Color(0xFF90AB77),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.arrow_back, color: Colors.white),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                    title: Text(
+                      'Nos partenaires',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    }),
+                ListTile(
+                    title: Text(
+                      'La team Phoïkos',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return PhoikosTeamPagePageWidget();
+                      }));
+                    })
+              ],
+            ),
+          ),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
