@@ -79,30 +79,32 @@ class _Category1PageWidgetState extends State<Category1PageWidget> {
       itemBuilder: (BuildContext context, int index) {
         //return _categoryWidgetFromModel(_categories[index]);
         return new GestureDetector(
-          child: new Card(
-              elevation: 5.0,
-              child: new Container(
-                alignment: Alignment.centerLeft,
-                margin: new EdgeInsets.all(5.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text(_articles[index].name),
-                    Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Image.asset(_articles[index].image,
-                            width: 200, height: 100)),
-                  ],
-                ),
-              )),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ArticleScreenWidget()),
-            );
-          },
-        );
+            child: new Card(
+                elevation: 5.0,
+                child: new Container(
+                  alignment: Alignment.centerLeft,
+                  margin: new EdgeInsets.all(5.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(_articles[index].name),
+                      Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Image.asset(_articles[index].image,
+                              width: 200, height: 100)),
+                    ],
+                  ),
+                )),
+            onTap: () {
+              /*CachedNetworkImage(
+                imageUrl: 'https://picsum.photos/250?image=9',
+              );*/
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ArticleScreenWidget()),
+              );
+            });
       },
     );
   }

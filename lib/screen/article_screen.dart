@@ -1,15 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:phoikos/services/image_downloader.dart';
 import 'package:phoikos/utils/colors.dart';
 
 class ArticleScreenWidget extends StatelessWidget {
+  final db = Firestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Article Title',
-            style: TextStyle(
-              color: Colors.white,
-            )),
+        title: StreamBuilder(
+          stream: db.collection("color").snapshots(),
+          builder: (context, snapshot) {
+            return Text("${snapshot.data.documents[0]['code']}",
+                style: TextStyle(
+                  color: Colors.white,
+                ));
+          },
+        ),
         centerTitle: true,
         backgroundColor: Color(0xFF90AB77),
         actions: <Widget>[
@@ -39,13 +48,18 @@ class ArticleScreenWidget extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.all(25.0),
-                child: Image(
+                  padding: EdgeInsets.all(25.0),
+                  child: Container(
+                    color: Colors.lightBlueAccent,
+                    child: LoadFirebaseStorageImage(),
+                  )
+
+                  /*Image(
                   image: AssetImage('assets/images/category_1/phoques.jpg'),
                   height: 200,
                   width: 300,
-                ),
-              ),
+                ), */
+                  ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.0),
                 child: RichText(

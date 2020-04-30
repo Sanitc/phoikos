@@ -14,7 +14,7 @@ description: A Phoikos application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -25,6 +25,12 @@ dependencies:
   cupertino_icons: ^0.1.2
   curved_navigation_bar: ^0.3.2 #latest version
   google_maps_flutter: ^0.5.24+1
+  #rajoutés avec le tuto firebase sur youtube
+  firebase_core: ^0.4.0+9
+  firebase_auth: ^0.15.5+3
+  cloud_firestore: ^0.13.4+2
+  firebase_storage: ^3.0.8
+  image_picker: ^0.6.4
 
 dev_dependencies:
   flutter_test:
