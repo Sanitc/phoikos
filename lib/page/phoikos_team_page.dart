@@ -51,7 +51,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
   }
 
   var alertStyle = AlertStyle(
-    animationType: AnimationType.fromTop,
+    animationType: AnimationType.grow,
     isCloseButton: false,
     isOverlayTapDismiss: false,
     //descStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -408,6 +408,62 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                 ]).show();
           },
         ),
+        GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              child: FittedBox(
+                child: Material(
+                  color: Colors.white,
+                  elevation: 14.0,
+                  borderRadius: BorderRadius.circular(24.0),
+                  shadowColor: Color(0xFFC7E2AC),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 250,
+                        height: 250,
+                        child: ClipRRect(
+                          borderRadius: new BorderRadius.circular(24.0),
+                          child: Image(
+                              fit: BoxFit.contain,
+                              alignment: Alignment.topLeft,
+                              image:
+                                  AssetImage('assets/images/team/malvyn.jpg')),
+                        ),
+                      ),
+                      Container(
+                        child: DetailsMalvyn(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            return Alert(
+                context: context,
+                title: "Présentation",
+                style: alertStyle,
+                desc:
+                    "Passionné depuis tout jeune par le web, la musique, la faune, la flore ou encore l’astronomie; "
+                    "je n’ai jamais perdu mes rêves d’enfants. Soucieux depuis toujours de l’environnement et son évolution,"
+                    " j’ai enfin trouvé avec phoikos la manière de mettre mes capacités en valeur et "
+                    "ma pierre à l’édifice pour ce dur combat qu’est celui de l’écologie.",
+                buttons: [
+                  DialogButton(
+                    onPressed: () => Navigator.pop(context),
+                    radius: BorderRadius.circular(24.0),
+                    color: Color(0xFFC7E2AC),
+                    child: Text(
+                      "Fermer",
+                      style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
+                    ),
+                  ),
+                ]).show();
+          },
+        ),
       ],
     );
   }
@@ -598,6 +654,40 @@ Widget DetailsClement() {
       ),
       Padding(
         padding: const EdgeInsets.only(left: 50.0),
+        child: Container(
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Container(
+                child: Text(
+              "Développeur",
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 18.0,
+              ),
+            )),
+          ],
+        )),
+      ),
+    ],
+  );
+}
+
+Widget DetailsMalvyn() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(right: 50.0),
+        child: Container(
+            child: Text(
+          "Malvyn",
+          style: TextStyle(
+              color: Colors.black, fontSize: 24.0, fontWeight: FontWeight.bold),
+        )),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 50.0),
         child: Container(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
