@@ -24,6 +24,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   curved_navigation_bar: ^0.3.2 #latest version
+  persistent_bottom_nav_bar: any
   google_maps_flutter: ^0.5.24+1
   #rajoutés avec le tuto firebase sur youtube
   firebase_core: ^0.4.0+9
