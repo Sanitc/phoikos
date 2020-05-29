@@ -31,8 +31,8 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     )..addListener(() {
-        setState(() {});
-      });
+      setState(() {});
+    });
 
     _offsetAnimation = Tween<Offset>(
       end: Offset.zero,
@@ -99,28 +99,28 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
           ),
           _selectedMarker != null
               ? Positioned(
-                  bottom: 16.0,
-                  left: 16.0,
-                  right: 16.0,
-                  child: SlideTransition(
-                    position: _offsetAnimation,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12.0),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: new Offset(2.0, 2.0),
-                          )
-                        ],
-                      ),
-                      height: 120.0,
-                    ),
+            bottom: 16.0,
+            left: 16.0,
+            right: 16.0,
+            child: SlideTransition(
+              position: _offsetAnimation,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12.0),
                   ),
-                )
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: new Offset(2.0, 2.0),
+                    )
+                  ],
+                ),
+                height: 120.0,
+              ),
+            ),
+          )
               : Container()
         ],
       ),
