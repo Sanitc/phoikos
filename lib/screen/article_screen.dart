@@ -1,26 +1,46 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/services/image_downloader.dart';
-import 'package:phoikos/utils/colors.dart';
 
-class ArticleScreenWidget extends StatelessWidget {
+class ArticleScreenWidget extends StatefulWidget {
+  /*extends StatelessWidget {*/
+  final Article article;
+
+  ArticleScreenWidget(this.article);
+
+  @override
+  _ArticleDetailPageState createState() => _ArticleDetailPageState();
+}
+
+class _ArticleDetailPageState extends State<ArticleScreenWidget> {
+  /*ArticleScreenWidget(this.index);
+  final int index;*/
   final db = Firestore.instance;
 
   @override
   Widget build(BuildContext context) {
+    String _nameImage = widget.article.name;
+    String _articleTitle = widget.article.image;
     return Scaffold(
       appBar: AppBar(
-        title: StreamBuilder(
-          stream: db.collection("color").snapshots(),
+        title: Text(widget.article.name),
+        /*title: StreamBuilder(
+          stream: db.collection("article").snapshots(),
           builder: (context, snapshot) {
-            return Text("${snapshot.data.documents[0]['code']}",
-                style: TextStyle(
-                  color: Colors.white,
-                ));
+            if (snapshot.data == null) return CircularProgressIndicator();
+
+            _articleTitle = "${snapshot.data.documents[index]['title']}";
+            return Text(
+              _articleTitle,
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            );
           },
-        ),
+        ),*/
         centerTitle: true,
-        backgroundColor: Color(0xFF90AB77),
+        backgroundColor: Color(0xFF5a9216),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -36,22 +56,50 @@ class ArticleScreenWidget extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFE3FFC7),
-              Color(0xFFC7E2AC),
-              Color(0xFFABC691),
-              Color(0xFF90AB77),
+              Color(0xFFbef67a),
+              Color(0xFF8bc34a),
+              Color(0xFF5a9216),
             ],
-            stops: [0.1, 0.4, 0.7, 0.9],
+            stops: [0.1, 0.4, 0.9],
           ),
         ),
         child: Center(
           child: Column(
             children: <Widget>[
               Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30.0),
+                child: Text(widget.article.name),
+                /*child: StreamBuilder(
+                  stream: db.collection("article").snapshots(),
+                  builder: (context, snapshot) {
+                    _articleContent =
+                        "${snapshot.data.documents[index]['introduction']}";
+                    return RichText(
+                        textAlign: TextAlign.justify,
+                        text: TextSpan(text: _articleContent));
+                  },
+                ),*/
+              ),
+              Padding(
+                  padding: EdgeInsets.all(25.0),
+                  child:
+                      LoadFirebaseStorageImage(_nameImage, 200, 30, "article")
+                  /*child: StreamBuilder(
+                    stream: db.collection("article").snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.data == null)
+                        return CircularProgressIndicator();
+                      _nameImage = "${snapshot.data.documents[index]['photo']}";
+                      return LoadFirebaseStorageImage(
+                          _nameImage, 200, 30, "article");
+                    },
+                  )*/
+                  ),
+              /*Padding(
                   padding: EdgeInsets.all(25.0),
                   child: Container(
                     color: Colors.lightBlueAccent,
-                    child: LoadFirebaseStorageImage(),
+                    child: new LoadFirebaseStorageImage(_nameImage),
                   )
 
                   /*Image(
@@ -59,28 +107,32 @@ class ArticleScreenWidget extends StatelessWidget {
                   height: 200,
                   width: 300,
                 ), */
-                  ),
+                  ),*/
+              //if para_1 != null then afficher padding
               Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: RichText(
+                      textAlign: TextAlign.justify,
+                      text: TextSpan(text: widget.article.name))),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30.0),
+                  child: RichText(
+                      textAlign: TextAlign.justify,
+                      text: TextSpan(text: widget.article.name))),
+              /*Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    text:
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                        " Vivamus ultrices congue consectetur. Integer facilisis, "
-                        "nulla at varius gravida, nisi elit hendrerit leo, non porttitor "
-                        "dui ipsum a leo. Nam pretium mi turpis. In sed lorem sit amet purus "
-                        "venenatis volutpat. Phasellus eu pellentesque risus, eget congue mauris."
-                        " Etiam eget justo ut mi ullamcorper bibendum. Aliquam placerat lectus ut "
-                        "diam aliquet, sed faucibus lacus consectetur. Phasellus eget nunc ipsum. "
-                        "Ut vestibulum blandit justo non pulvinar. Interdum et malesuada fames ac "
-                        "ante ipsum primis in faucibus. Praesent dictum, ex at semper blandit. ",
-                    style: TextStyle(
-                      color: PColors.textColor,
-                    ),
-                  ),
+                child: StreamBuilder(
+                  stream: db.collection("article").snapshots(),
+                  builder: (context, snapshot) {
+                    _articleContent =
+                        "${snapshot.data.documents[index]['paragraphe_3']}";
+                    if (_articleContent == null) return Text("coucou");
+                    return RichText(
+                        textAlign: TextAlign.justify,
+                        text: TextSpan(text: _articleContent));
+                  },
                 ),
-              )
+              ),*/
             ],
           ),
         ),

@@ -45,7 +45,7 @@ class _MainPageWidgetState extends State<MainPageWidget> {
           Icon(Icons.tag_faces, size: 17),
         ],
         color: PColors.paleGreen,
-        backgroundColor: Color(0xFF90AB77),
+        backgroundColor: Color(0xFF5a9216), //0xFF90AB77
         buttonBackgroundColor: Color(0xFFFFFFE3),
         animationCurve: Curves.easeInOut,
         animationDuration: Duration(milliseconds: 300),
