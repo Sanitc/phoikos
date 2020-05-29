@@ -112,7 +112,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
             return Alert(
                 context: context,
                 style: alertStyle,
-                title: "Présentation",
+                title: "",
                 desc:
                     "Pas tout à fait 'éco-responsable' dans l'âme il y a encore quelques mois, "
                     "je vivais une prise de conscience progressive au moment de ma rencontre avec le groupe. Grâce à ce projet,"
@@ -167,7 +167,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           onTap: () {
             return Alert(
                 context: context,
-                title: "Présentation",
+                title: "",
                 style: alertStyle,
                 desc:
                     'Après mes études en marketing, j’ai décidé de m’axer plus dans le digital. '
@@ -223,7 +223,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           onTap: () {
             return Alert(
                 context: context,
-                title: "Présentation",
+                title: "",
                 style: alertStyle,
                 desc:
                     "J‘ai décidé de tourner ma reconversion professionnelle dans une activité me permettant de travailler dans le digital. "
@@ -278,7 +278,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           onTap: () {
             return Alert(
                 context: context,
-                title: "Présentation",
+                title: "",
                 style: alertStyle,
                 desc: "Suite à mes études en BTS assistant de gestion,"
                     " j’ai décidé de me réorienter dans le domaine du numérique. "
@@ -333,7 +333,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           onTap: () {
             return Alert(
                 context: context,
-                title: "Présentation",
+                title: "",
                 style: alertStyle,
                 desc:
                     "Grande curieuse, je pratique beaucoup d'activités au quotidien telles que le théâtre, "
@@ -389,7 +389,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           onTap: () {
             return Alert(
                 context: context,
-                title: "Présentation",
+                title: "",
                 style: alertStyle,
                 desc:
                     "Actuellement en bachelor developpement web, j'ai voulu allier mon travail avec une cause juste. "
@@ -444,7 +444,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           onTap: () {
             return Alert(
                 context: context,
-                title: "Présentation",
+                title: "",
                 style: alertStyle,
                 desc:
                     "Passionné depuis tout jeune par le web, la musique, la faune, la flore ou encore l’astronomie; "
