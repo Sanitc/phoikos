@@ -31,8 +31,8 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     )..addListener(() {
-      setState(() {});
-    });
+        setState(() {});
+      });
 
     _offsetAnimation = Tween<Offset>(
       end: Offset.zero,
@@ -61,23 +61,6 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Map',
-            style: TextStyle(
-              color: Colors.white,
-            )),
-        centerTitle: true,
-        backgroundColor: Color(0xFF90AB77),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print('click on search');
-            },
-          )
-        ],
-      ),
       body: Stack(
         children: <Widget>[
           GoogleMap(
@@ -99,28 +82,28 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
           ),
           _selectedMarker != null
               ? Positioned(
-            bottom: 16.0,
-            left: 16.0,
-            right: 16.0,
-            child: SlideTransition(
-              position: _offsetAnimation,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(12.0),
+                  bottom: 16.0,
+                  left: 16.0,
+                  right: 16.0,
+                  child: SlideTransition(
+                    position: _offsetAnimation,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            offset: new Offset(2.0, 2.0),
+                          )
+                        ],
+                      ),
+                      height: 120.0,
+                    ),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: new Offset(2.0, 2.0),
-                    )
-                  ],
-                ),
-                height: 120.0,
-              ),
-            ),
-          )
+                )
               : Container()
         ],
       ),

@@ -4,23 +4,6 @@ class FavoriteScreenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Favoris',
-            style: TextStyle(
-              color: Colors.white,
-            )),
-        centerTitle: true,
-        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print('click on search');
-            },
-          )
-        ],
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

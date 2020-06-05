@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:phoikos/page/partner_page.dart';
+import 'package:phoikos/page/phoikos_team_page.dart';
+import 'package:phoikos/page/profile_page.dart';
 import 'package:phoikos/screen/favorite_screen.dart';
 import 'package:phoikos/screen/home_screen.dart';
 import 'package:phoikos/screen/map_screen.dart';
@@ -29,6 +32,75 @@ class _MainPageWidgetState extends State<MainPageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Phoïkos',
+            style: TextStyle(
+              color: Colors.white,
+            )),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+        automaticallyImplyLeading: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              print('click on search');
+            },
+          )
+        ],
+      ),
+      drawer: Container(
+        width: 180,
+        child: Drawer(
+          child: Container(
+            color: Color.fromRGBO(23, 69, 58, 0.81),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.arrow_back, color: Colors.white),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                    title: Text(
+                      'Nos partenaires',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return PartnerPagePageWidget();
+                      }));
+                    }),
+                ListTile(
+                    title: Text(
+                      'La team Phoïkos',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return PhoikosTeamPagePageWidget();
+                      }));
+                    }),
+                ListTile(
+                    title: Text(
+                      'Mon profil',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ProfilePagePageWidget();
+                      }));
+                    })
+              ],
+            ),
+          ),
+        ),
+      ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
             // sets the background color of the `BottomNavigationBar`
