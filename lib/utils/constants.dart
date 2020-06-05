@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final kHintTextStyle = TextStyle(
-  color: Colors.white54,
+  color: Colors.grey,
   fontFamily: 'roboto',
 );
 
@@ -11,8 +11,15 @@ final kLabelStyle = TextStyle(
   fontFamily: 'roboto',
 );
 
+final ChangePage = TextStyle(
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'roboto',
+  decoration: TextDecoration.underline,
+);
+
 final kBoxDecorationStyle = BoxDecoration(
-  color: Color(0xFF90AB77),
+  color: Colors.white,
   borderRadius: BorderRadius.circular(10.0),
   boxShadow: [
     BoxShadow(

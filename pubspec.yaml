@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
+  gradient_app_bar: ^0.0.1
+
   flutter:
     sdk: flutter
 
@@ -56,6 +58,7 @@ flutter:
     - assets/images/categories/
     - assets/images/category_1/
     - assets/images/team/
+    - assets/images/background/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
