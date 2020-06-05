@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ProfileScreenWidget extends StatelessWidget {
+class ProfilePagePageWidget extends StatefulWidget {
+  @override
+  _ProfilePageWidgetState createState() => _ProfilePageWidgetState();
+}
+
+class _ProfilePageWidgetState extends State<ProfilePagePageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

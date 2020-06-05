@@ -2,15 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phoikos/page/main_page.dart';
-import 'package:phoikos/page/signup_page.dart';
 import 'package:phoikos/utils/constants.dart';
 
-class LoginPageWidget extends StatefulWidget {
+import 'login_page.dart';
+
+class SignUpPageWidget extends StatefulWidget {
   @override
-  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+  _SignUpPageWidgetState createState() => _SignUpPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
+class _SignUpPageWidgetState extends State<SignUpPageWidget> {
   bool _rememberMe = false;
 
   Widget _buildSignupPage() {
@@ -19,21 +20,21 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       children: <Widget>[
         Expanded(
           child: FlatButton(
-            onPressed: () => print('Forgot Password Button Pressed'),
+            onPressed: () => goToSigninPage,
             padding: EdgeInsets.only(right: 0.0),
             child: Text(
               'CONNEXION',
-              style: ChangePage,
+              style: kLabelStyle,
             ),
           ),
         ),
         Expanded(
           child: FlatButton(
-            onPressed: () => goToSignUpPage,
+            onPressed: () => print('Forgot Password Button Pressed'),
             padding: EdgeInsets.only(right: 0.0),
             child: Text(
               'INSCRIPTION',
-              style: kLabelStyle,
+              style: ChangePage,
             ),
           ),
         )
@@ -264,9 +265,8 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
                       _buildEmailTF(),
                       _buildPasswordTF(),
-                      _buildRememberMeCheckbox(),
                       _buildLoginBtn(),
-                      _buildForgotPasswordBtn(),
+
                       //_buildSignupBtn(),
                     ],
                   ),
@@ -285,9 +285,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     }));
   }
 
-  void goToSignUpPage() {
+  void goToSigninPage() {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return SignUpPageWidget();
+      return LoginPageWidget();
     }));
   }
 }

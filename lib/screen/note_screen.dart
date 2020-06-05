@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phoikos/page/phoikos_team_page.dart';
+import 'package:phoikos/page/profile_page.dart';
 
 class NoteScreenWidget extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -55,6 +56,17 @@ class NoteScreenWidget extends StatelessWidget {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (BuildContext context) {
                         return PhoikosTeamPagePageWidget();
+                      }));
+                    }),
+                ListTile(
+                    title: Text(
+                      'Mon profil',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ProfilePagePageWidget();
                       }));
                     })
               ],

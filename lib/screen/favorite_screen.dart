@@ -10,7 +10,7 @@ class FavoriteScreenWidget extends StatelessWidget {
               color: Colors.white,
             )),
         centerTitle: true,
-        backgroundColor: Color(0xFF90AB77),
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -26,13 +26,12 @@ class FavoriteScreenWidget extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            stops: [0.1, 0.5, 0.9],
             colors: [
-              Color(0xFFE3FFC7),
-              Color(0xFFC7E2AC),
-              Color(0xFFABC691),
-              Color(0xFF90AB77),
+              Color.fromRGBO(23, 69, 58, 0.81),
+              Color.fromRGBO(46, 137, 116, 0.81),
+              Color.fromRGBO(65, 236, 133, 0.56)
             ],
-            stops: [0.1, 0.4, 0.7, 0.9],
           ),
         ),
       ),

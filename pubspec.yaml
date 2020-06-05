@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
+  gradient_app_bar: ^0.0.1
+
   flutter:
     sdk: flutter
 
@@ -24,6 +26,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   curved_navigation_bar: ^0.3.2 #latest version
+  persistent_bottom_nav_bar: any
   google_maps_flutter: ^0.5.24+1
   #rajoutés avec le tuto firebase sur youtube
   firebase_core: ^0.4.0+9
@@ -55,6 +58,7 @@ flutter:
     - assets/images/categories/
     - assets/images/category_1/
     - assets/images/team/
+    - assets/images/background/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
