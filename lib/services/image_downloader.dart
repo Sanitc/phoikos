@@ -27,7 +27,8 @@ class LoadFirebaseStorageImage extends StatelessWidget {
               height: 200,
               width: 300,
               child: snapshot.data != null
-                  ? Image.network(snapshot.data, fit: BoxFit.fitWidth)
+                  ? Image.network(snapshot.data,
+                      fit: BoxFit.cover) //cover = fit la boite
                   : Container(),
             );
           if (snapshot.connectionState == ConnectionState.done &&
@@ -36,7 +37,7 @@ class LoadFirebaseStorageImage extends StatelessWidget {
               height: heightImage, //200,
               width: widthImage, //300,
               child: snapshot.data != null
-                  ? Image.network(snapshot.data, fit: BoxFit.fitWidth)
+                  ? Image.network(snapshot.data, fit: BoxFit.cover)
                   : Container(),
             );
 

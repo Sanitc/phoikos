@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:phoikos/model/Category.dart';
 import 'package:phoikos/page/category_page.dart';
+import 'package:phoikos/services/image_downloader.dart';
 
 class HomeScreenWidget extends StatefulWidget {
   @override
@@ -13,19 +14,18 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
   @override
   void initState() {
+    db.collection('category').getDocuments().then((QuerySnapshot snapshot) {
+      snapshot.documents
+          .forEach((f) => print('${f.data}')); //y avait un } en plus
+    });
     super.initState();
-
-    /*for (int i = 1; i < 11; i++) {
-      _categories.add(Category(i, 'Category ' + '$i',
-          'assets/images/categories/image_' + '$i' + '.jpg'));
-    }*/
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bonjour user !',
+        title: Text('Phoïkos',
             style: TextStyle(
               color: Colors.white,
             )),
@@ -43,6 +43,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       ),
       body: Container(
         padding: const EdgeInsets.all(15.0),
+        height: 800,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -57,37 +58,180 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           ),
         ),
         child: Column(
+          //column
           children: <Widget>[
-            //SingleChildScrollView(
-
-            //),
-            Expanded(child: _gridView()), //LoadFirebaseStorageImage()
+            Align(
+                alignment: Alignment.centerLeft,
+                child: Text("Nouveaux articles !",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ))),
+            Container(
+                height: 170,
+                child: ListView(
+                    //builder
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
+                      _createNewArticles(),
+                      _createNewArticles(),
+                      _createNewArticles(),
+                      _createNewArticles(),
+                      _createNewArticles(),
+                      _createNewArticles(),
+                      _createNewArticles(),
+                      _createNewArticles()
+                    ])),
+            Container(
+                margin: const EdgeInsets.only(top: 20.0),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("CATEGORIES",
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        )))),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: getChipCategoryName(context),
+            ),
+            //Expanded(child: _categoryButtonView()), //LoadFirebaseStorageImage()
           ],
         ),
       ),
     );
   }
 
-  /*Widget _categoryWidgetFromModel(Category category) {
-    return Card(
-      child: Column(
-        children: <Widget>[Text(category.name)],
-      ),
-    );
-  }*/
+  Widget _createNewArticles() {
+    return Container(
+        width: 100,
+        height: 100,
+        child: Column(
+          //Card
+          children: <Widget>[
+            Expanded(
+                child: LoadFirebaseStorageImage(
+                    "categorie_salle_de_bain.jpg", 70, 70, "categorie")),
+            Text(
+              "oui",
+              style:
+                  DefaultTextStyle.of(context).style.apply(fontSizeFactor: 1),
+            ),
+          ],
+        ));
+  }
 
-  Stream<QuerySnapshot> getCategorieList(BuildContext context) async* {
-    yield* db.collection("category").snapshots();
+  Widget getChipCategoryName(BuildContext context) {
+    return FutureBuilder(
+      future: db.collection("category").getDocuments(),
+      builder: (context, snapshot) {
+        print('snapshot ${snapshot}');
+
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          List<Category> categories = [];
+
+          var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
+
+          querySnapshot.data.documents.forEach((element) {
+            print('${element.data}');
+            print('${element.documentID}');
+            categories.add(Category.fromJSON(element.documentID, element.data));
+          });
+          return //Wrap(children: [
+              new Row(children: <Widget>[
+            Expanded(
+                child: SizedBox(
+                    height: 100,
+                    child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3),
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          return FlatButton(
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return CategoryPageWidget(categories[index]);
+                                }));
+                              },
+                              child: GridTile(
+                                child: Center(
+                                  child: Text(
+                                    categories[index].name,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ); //Text('oui');
+                          /*return ActionChip(
+                                label: Text(
+                                  categories[index].name,
+                                ),
+                                onPressed: () {
+                                  print(
+                                      "If you stand for nothing, Burr, what’ll you fall for?");
+                                });*/
+                        })))
+          ]);
+          //]);
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  Widget _categoryButtonView() {
+    return FutureBuilder(
+      future: db.collection("category").getDocuments(),
+      builder: (context, snapshot) {
+        print('snapshot ${snapshot}');
+
+        if (snapshot.connectionState == ConnectionState.done &&
+            snapshot.hasData) {
+          List<Category> categories = [];
+
+          var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
+
+          querySnapshot.data.documents.forEach((element) {
+            print('${element.data}');
+            print('${element.documentID}');
+            categories.add(Category.fromJSON(element.documentID, element.data));
+          });
+
+          return GridView.builder(
+              gridDelegate:
+                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                return FlatButton(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return CategoryPageWidget(categories[index]);
+                      }));
+                    },
+                    child: GridTile(
+                      child: Center(
+                        child: Text(
+                          categories[index].name,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              });
+        }
+        return Center(child: CircularProgressIndicator());
+      },
+    );
   }
 
   Widget _gridView() {
-    /*List<Category> _categories = [];
-    String _imageCategory;
-    String _nameCategory;
-    String _indexCategory;
-    String _collectionCategory;
-
-    child:*/
     return FutureBuilder(
       future: db.collection("category").getDocuments(),
       builder: (context, snapshot) {
