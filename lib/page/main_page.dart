@@ -90,7 +90,7 @@ class _MainPageWidgetState extends State<MainPageWidget> {
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return ProfilePagePageWidget();
+                        return ProfilePageWidget();
                       }));
                     })
               ],

@@ -92,14 +92,14 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
                         child: ClipRRect(
                           borderRadius: new BorderRadius.circular(24.0),
                           child: Image(
-                              fit: BoxFit.contain,
+                              fit: BoxFit.fill,
                               alignment: Alignment.topLeft,
-                              image:
-                                  AssetImage('assets/images/team/gloria.jpg')),
+                              image: AssetImage(
+                                  'assets/images/logo/logo_Biocoop.png')),
                         ),
                       ),
                       Container(
-                        child: DetailsGloria(),
+                        child: DetailsPartner(),
                       ),
                     ],
                   ),
@@ -115,7 +115,7 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
                 desc:
                     "Adresse :\n 8 Rue de la Cerisaie, 35760 Saint-Grégoire \n\n "
                     "Téléphone : \n 02 99 87 14 14 \n\n"
-                    " Site Web : \n scarabee-biocoop.fr",
+                    "Site Web : \n scarabee-biocoop.fr",
                 buttons: [
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
@@ -134,7 +134,7 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
   }
 }
 
-Widget DetailsGloria() {
+Widget DetailsPartner() {
   return Column(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: <Widget>[

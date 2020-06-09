@@ -18,26 +18,30 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Expanded(
-          child: FlatButton(
-            onPressed: () => goToSigninPage,
-            padding: EdgeInsets.only(right: 0.0),
-            child: Text(
-              'CONNEXION',
-              style: kLabelStyle,
+        GestureDetector(
+          child: Expanded(
+            child: Container(
+              height: 50,
+              child: Center(
+                child: Text("CONNEXION", style: kLabelStyle),
+              ),
+            ),
+          ),
+          onTap: goToSigninPage,
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        GestureDetector(
+          child: Expanded(
+            child: Container(
+              height: 50,
+              child: Center(
+                child: Text("INSCRIPTION", style: ChangePage),
+              ),
             ),
           ),
         ),
-        Expanded(
-          child: FlatButton(
-            onPressed: () => print('Forgot Password Button Pressed'),
-            padding: EdgeInsets.only(right: 0.0),
-            child: Text(
-              'INSCRIPTION',
-              style: ChangePage,
-            ),
-          ),
-        )
       ],
     );
   }
@@ -47,7 +51,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Email',
+          'Adresse mail',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -73,6 +77,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
             ),
           ),
         ),
+        SizedBox(height: 10.0),
       ],
     );
   }
@@ -108,48 +113,43 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
             ),
           ),
         ),
+        SizedBox(height: 10.0),
       ],
     );
   }
 
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Text(
-            'Se souvenir de moi',
-            style: kLabelStyle,
-          ),
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Color.fromRGBO(115, 44, 30, 0.81),
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        onPressed: () => print('Forgot Password Button Pressed'),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Mot de passe oublié?',
+  Widget _buildPasswordIsOkTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Confirmation du mot de passe',
           style: kLabelStyle,
         ),
-      ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              hintText: 'Tapez votre Mot de Passe',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -174,34 +174,6 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSignupBtn() {
-    return GestureDetector(
-      onTap: () => print('Sign Up Button Pressed'),
-      child: RichText(
-        text: TextSpan(
-          children: [
-            TextSpan(
-              text: 'Vous n\'avez pas de compte? ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            TextSpan(
-              text: 'Inscrivez-vous',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
         ),
       ),
     );
@@ -262,12 +234,10 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
                       SizedBox(
                         height: 30.0,
                       ),
-
                       _buildEmailTF(),
                       _buildPasswordTF(),
+                      _buildPasswordIsOkTF(),
                       _buildLoginBtn(),
-
-                      //_buildSignupBtn(),
                     ],
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -64,6 +65,12 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
       body: Stack(
         children: <Widget>[
           GoogleMap(
+            rotateGesturesEnabled: false,
+            scrollGesturesEnabled: true,
+            tiltGesturesEnabled: false,
+            zoomGesturesEnabled: true,
+            zoomControlsEnabled: false,
+            mapToolbarEnabled: false,
             onTap: (position) {
               _controller.reverse();
 
@@ -87,9 +94,39 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
                   right: 16.0,
                   child: SlideTransition(
                     position: _offsetAnimation,
-                    child: Container(
+                    child: FittedBox(
+                      child: Material(
+                        color: Color.fromRGBO(228, 101, 76, 0.9),
+                        elevation: 14.0,
+                        borderRadius: BorderRadius.circular(14.0),
+                        shadowColor: Colors.grey,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              width: 180,
+                              height: 200,
+                              child: ClipRRect(
+                                borderRadius: new BorderRadius.circular(14.0),
+                                child: Image(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                      'assets/images/logo/logo_Biocoop.png'),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: myDetailContainer(),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ), /*Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Color.fromRGBO(228, 101, 76, 0.84),
                         borderRadius: BorderRadius.all(
                           Radius.circular(12.0),
                         ),
@@ -101,7 +138,7 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
                         ],
                       ),
                       height: 120.0,
-                    ),
+                    ),*/
                   ),
                 )
               : Container()
@@ -109,4 +146,51 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
       ),
     );
   }
+}
+
+Widget myDetailContainer() {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: <Widget>[
+      Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Container(
+          child: Text(
+            'Biocoop Scarabée St Grégoire',
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      SizedBox(height: 5.0),
+      Container(
+          child: Text(
+        "Adresse : 8 Rue de la Cerisaie, 35760 Saint-Grégoire",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18.0,
+        ),
+      )),
+      SizedBox(height: 5.0),
+      Container(
+          child: Text(
+        "Téléphone : 02 99 87 14 14 ",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18.0,
+        ),
+      )),
+      SizedBox(height: 5.0),
+      Container(
+          child: Text(
+        "Site Web : scarabee-biocoop.fr",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 18.0,
+        ),
+      )),
+    ],
+  );
 }
