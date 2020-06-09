@@ -1,46 +1,29 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phoikos/page/forget_password_page.dart';
 import 'package:phoikos/page/main_page.dart';
-import 'package:phoikos/page/signup_page.dart';
 import 'package:phoikos/utils/constants.dart';
 
-class LoginPageWidget extends StatefulWidget {
+import 'login_page.dart';
+
+class ForgetPasswordPageWidget extends StatefulWidget {
   @override
-  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+  _ForgetPasswordPageWidgetState createState() =>
+      _ForgetPasswordPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
+class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
   bool _rememberMe = false;
 
-  Widget _buildSignupPage() {
+  Widget _buildMDPOubliePage() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        GestureDetector(
-          child: Expanded(
-            child: Container(
-              height: 50,
-              child: Center(
-                child: Text("CONNEXION", style: ChangePage),
-              ),
-            ),
+        Expanded(
+          child: Text(
+            'MOT DE PASSE OUBLIE',
+            style: ChangePage,
           ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        GestureDetector(
-          child: Expanded(
-            child: Container(
-              height: 50,
-              child: Center(
-                child: Text("INSCRIPTION", style: kLabelStyle),
-              ),
-            ),
-          ),
-          onTap: goToSignUpPage,
         ),
       ],
     );
@@ -51,7 +34,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Adresse mail',
+          'Email',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -77,88 +60,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             ),
           ),
         ),
-        SizedBox(height: 10.0),
       ],
     );
   }
 
-  Widget _buildPasswordTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Mot de Passe',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            obscureText: true,
-            style: TextStyle(
-              color: Colors.grey,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.lock,
-                color: Colors.white,
-              ),
-              hintText: 'Tapez votre Mot de Passe',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Text(
-            'Se souvenir de moi',
-            style: kLabelStyle,
-          ),
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Color.fromRGBO(115, 44, 30, 0.81),
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        onPressed: () => goToForgetPWD(),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Mot de passe oublié?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoginBtn() {
+  Widget _buildSendBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
@@ -179,6 +85,20 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackLoginPage() {
+    return Container(
+      alignment: Alignment.center,
+      child: FlatButton(
+        onPressed: () => goToSigninPage(),
+        padding: EdgeInsets.only(right: 0.0),
+        child: Text(
+          'Retour à la connexion?',
+          style: kLabelStyle,
         ),
       ),
     );
@@ -235,17 +155,13 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                         ),
                       ),
                       SizedBox(height: 30.0),
-                      _buildSignupPage(),
+                      _buildMDPOubliePage(),
                       SizedBox(
                         height: 30.0,
                       ),
-
                       _buildEmailTF(),
-                      _buildPasswordTF(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildForgotPasswordBtn(),
-                      //_buildSignupBtn(),
+                      _buildSendBtn(),
+                      _buildBackLoginPage(),
                     ],
                   ),
                 ),
@@ -263,15 +179,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     }));
   }
 
-  void goToSignUpPage() {
+  void goToSigninPage() {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return SignUpPageWidget();
-    }));
-  }
-
-  goToForgetPWD() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return ForgetPasswordPageWidget();
+      return LoginPageWidget();
     }));
   }
 }
