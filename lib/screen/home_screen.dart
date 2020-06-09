@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/model/Category.dart';
-import 'package:phoikos/page/category_page.dart';
 import 'package:phoikos/services/image_downloader.dart';
+
+//enum WidgetMarker { }
 
 class HomeScreenWidget extends StatefulWidget {
   @override
@@ -10,13 +12,19 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
+  var markerName = "salle_de_bain";
+  var markerId = "JgW5ha79tm3UBI1r5MPm";
+
+  Category category =
+      Category("JgW5ha79tm3UBI1r5MPm", "salle_de_bain", null, null);
   final db = Firestore.instance;
 
   @override
   void initState() {
     db.collection('category').getDocuments().then((QuerySnapshot snapshot) {
-      snapshot.documents
-          .forEach((f) => print('${f.data}')); //y avait un } en plus
+      snapshot.documents.forEach((f) {
+        return f.data['salle_de_bain'];
+      });
     });
     super.initState();
   }
@@ -30,7 +38,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               color: Colors.white,
             )),
         centerTitle: true,
-        backgroundColor: Color(0xFF5a9216), //0xFF90AB77
+        backgroundColor: Color(0xFF5a9216),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -48,13 +56,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            stops: [0.1, 0.5, 0.9],
             colors: [
-              Color(0xFFbef67a), //0xFFE3FFC7
-              Color(0xFF8bc34a), //0xFFC7E2AC
-              //Color(0xFF8bc34a), //0xFFABC691
-              Color(0xFF5a9216), //0xFF90AB77
+              Color.fromRGBO(23, 69, 58, 0.81),
+              Color.fromRGBO(46, 137, 116, 0.81),
+              Color.fromRGBO(65, 236, 133, 0.56)
             ],
-            stops: [0.1, 0.4, 0.9],
           ),
         ),
         child: Column(
@@ -67,21 +74,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       fontSize: 20,
                       color: Colors.white,
                     ))),
-            Container(
-                height: 170,
-                child: ListView(
-                    //builder
-                    scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      _createNewArticles(),
-                      _createNewArticles(),
-                      _createNewArticles(),
-                      _createNewArticles(),
-                      _createNewArticles(),
-                      _createNewArticles(),
-                      _createNewArticles(),
-                      _createNewArticles()
-                    ])),
+            //TODO affichage nouveaux articles
             Container(
                 margin: const EdgeInsets.only(top: 20.0),
                 child: Align(
@@ -95,11 +88,77 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               alignment: Alignment.centerLeft,
               child: getChipCategoryName(context),
             ),
+            Container(
+                //height: 200,
+                //color: Colors.white,
+                child: blockGetArticlesOfTheCategory(category))
             //Expanded(child: _categoryButtonView()), //LoadFirebaseStorageImage()
           ],
         ),
       ),
     );
+  }
+
+  Widget blockGetArticlesOfTheCategory(Category category) {
+    markerName = category.collection;
+    markerId = category.id;
+
+    return getArticlesOfTheCategory(markerName, markerId);
+  }
+
+  Widget getArticlesOfTheCategory(markerName, markerId) {
+    return FutureBuilder(
+        future: db
+            .collection("category")
+            .document(markerId)
+            .collection(markerName)
+            .getDocuments(), //db.collection("category").getDocuments(),
+        builder: (context, snapshot) {
+          //var querySnapshot = snapshot;
+
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            List<Article> articles = [];
+
+            var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
+
+            querySnapshot.data.documents.forEach((element) {
+              print('${element.data}');
+              print('${element.documentID}');
+              articles.add(Article.fromJSON(element.data));
+            });
+
+            return GridView.builder(
+                padding: EdgeInsets.only(top: 20),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                itemCount: articles.length,
+                itemBuilder: (context, index) {
+                  return FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
+                      articles[index].name,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    color: Color.fromRGBO(35, 66, 57, 0.94),
+                  );
+                });
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
+  Future getList() async {
+    QuerySnapshot listArticles = await db
+        .collection('category')
+        .document('JgW5ha79tm3UBI1r5MPm')
+        .collection('salle_de_bain')
+        .getDocuments();
+    return listArticles.documents;
   }
 
   Widget _createNewArticles() {
@@ -121,62 +180,97 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         ));
   }
 
-  Widget getChipCategoryName(BuildContext context) {
+  FutureBuilder getChipCategoryName(BuildContext context) {
     return FutureBuilder(
       future: db.collection("category").getDocuments(),
       builder: (context, snapshot) {
-        print('snapshot ${snapshot}');
+        print('snapshot $snapshot');
 
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
           List<Category> categories = [];
 
-          var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
+          var querySnapshot = snapshot;
 
           querySnapshot.data.documents.forEach((element) {
             print('${element.data}');
             print('${element.documentID}');
             categories.add(Category.fromJSON(element.documentID, element.data));
           });
-          return //Wrap(children: [
-              new Row(children: <Widget>[
-            Expanded(
-                child: SizedBox(
-                    height: 100,
-                    child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                        itemCount: categories.length,
-                        itemBuilder: (context, index) {
-                          return FlatButton(
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return CategoryPageWidget(categories[index]);
-                                }));
-                              },
-                              child: GridTile(
-                                child: Center(
-                                  child: Text(
-                                    categories[index].name,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ); //Text('oui');
-                          /*return ActionChip(
-                                label: Text(
-                                  categories[index].name,
-                                ),
-                                onPressed: () {
-                                  print(
-                                      "If you stand for nothing, Burr, what’ll you fall for?");
-                                });*/
-                        })))
-          ]);
-          //]);
+          return /*GridView.builder(
+                  padding: EdgeInsets.only(top: 20),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  itemCount: categories.length,
+                  itemBuilder: (context, index) {
+                    return FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0)),
+                      onPressed: () {
+                        //TODO: changer la gridview en dessous
+                      },
+                      child: Text(
+                        categories[index].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      color: Color.fromRGBO(35, 66, 57, 0.94),
+                    );*/
+              Wrap(
+            spacing: 20,
+            children: <Widget>[
+              ActionChip(
+                  label: Text(
+                    categories[0].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    return getArticlesOfTheCategory(
+                        categories[0].collection, categories[0].id);
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[1].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    return getArticlesOfTheCategory(
+                        categories[1].collection, categories[1].id);
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[2].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    return getArticlesOfTheCategory(
+                        categories[2].collection, categories[2].id);
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[3].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    return getArticlesOfTheCategory(
+                        categories[3].collection, categories[3].id);
+                  })
+            ],
+          );
         }
         return Center(child: CircularProgressIndicator());
       },
@@ -206,20 +300,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
               itemCount: categories.length,
               itemBuilder: (context, index) {
-                return FlatButton(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CategoryPageWidget(categories[index]);
-                      }));
-                    },
-                    child: GridTile(
-                      child: Center(
-                        child: Text(
-                          categories[index].name,
-                          textAlign: TextAlign.center,
-                        ),
+                return Card(
+                  child: GridTile(
+                    child: Center(
+                      child: Text(
+                        categories[index].name,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
@@ -231,11 +317,11 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     );
   }
 
-  Widget _gridView() {
+/*Widget _gridView() {
     return FutureBuilder(
       future: db.collection("category").getDocuments(),
       builder: (context, snapshot) {
-        print('snapshot ${snapshot}');
+        print('snapshot $snapshot');
 
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
@@ -282,91 +368,43 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         }
         return Center(child: CircularProgressIndicator());
       },
-    );
-
-    /*return new StreamBuilder(
-      stream: getCategorieList(context),
-      builder: (BuildContext context, snapshot) {
-        return GridView.builder(
-          itemCount: 4, //snapshot.data.documents.length,
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (BuildContext context, int index) {
-            _nameCategory =
-                "${snapshot.data.documents[index]['nom_categorie']}";
-            _imageCategory = "${snapshot.data.documents[index]['photo']}";
-            _collectionCategory =
-                "${snapshot.data.documents[index]['collection']}";
-            _indexCategory = "${snapshot.data.toString()}";
-            _categories.add(Category(_indexCategory, _nameCategory,
-                _imageCategory, _collectionCategory));
-            //return _categoryWidgetFromModel(_categories[index]);
-            return new GestureDetector(
-              child: new Card(
-                  elevation: 5.0,
-                  child: new Container(
-                    alignment: Alignment.centerLeft,
-                    margin: new EdgeInsets.all(5.0),
-                    child: ListView(
-                      //mainAxisAlignment: MainAxisAlignment.center,
-                      //crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(_categories[index].name,
-                            textAlign: TextAlign.center),
-                        Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: LoadFirebaseStorageImage(
-                                _categories[index].image,
-                                120,
-                                200,
-                                "categorie")),
-                      ],
-                    ),
-                  )),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CategoryPageWidget(
-                          index: index,
-                          name: _categories[index]
-                              .name)), ////////////////////////////////////////////////
-                );
-              },
-            );
-          },
-        );
-      },
     );*/
-  }
 
-  /*void goToCategoryPage(int category) {
-    switch (category) {
-      case 1:
-        {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return Category1PageWidget();
-          }));
-        }
-        break;
-
-      case 2:
-        {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return Category1PageWidget();
-          }));
-        }
-        break;
-
-      default:
-        {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) {
-            return Category1PageWidget();
-          }));
-        }
-    }
-  }*/
+/*FutureBuilder futureBuilderTest() {
+      return FutureBuilder(
+          future: getList(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              print(snapshot.data.length);
+              return ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                      elevation: 8.0,
+                      shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: Colors.white)),
+                      margin:
+                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.white,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        child: SafeArea(
+                          child: Column(
+                            children: <Widget>[_createNewArticles()],
+                          ),
+                        ),
+                      ));
+                },
+              );
+            } else {
+              return Text('non');
+            }
+          });
+    }*/
 }

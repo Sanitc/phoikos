@@ -42,7 +42,7 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
     }
     //print("les articles " + _articles[0].name);*/
 
-  String _categoryTitle;
+  //String _categoryTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
               .collection(widget.category.collection)
               .getDocuments(),
           builder: (context, snapshot) {
-            print('snapshot ${snapshot}');
+            print('snapshot $snapshot');
 
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
