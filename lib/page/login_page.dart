@@ -220,21 +220,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 120.0,
+                    vertical: 50.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        'Phoïkos',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'OpenSans',
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       SizedBox(height: 30.0),
+                      Image(
+                        image:
+                            AssetImage('assets/images/logo/phoikos_title.png'),
+                      ),
+                      SizedBox(height: 10.0),
                       _buildSignupPage(),
                       SizedBox(
                         height: 30.0,
