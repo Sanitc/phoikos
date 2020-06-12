@@ -12,12 +12,10 @@ class HomeScreenWidget extends StatefulWidget {
 }
 
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
-  var markerName = "salle_de_bain";
-  var markerId = "JgW5ha79tm3UBI1r5MPm";
-
-  Category category =
-      Category("JgW5ha79tm3UBI1r5MPm", "salle_de_bain", null, null);
   final db = Firestore.instance;
+
+  var markerName;
+  var markerId;
 
   @override
   void initState() {
@@ -26,29 +24,30 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         return f.data['salle_de_bain'];
       });
     });
+
+    /*db
+        .collection("category")
+        .document("JgW5ha79tm3UBI1r5MPm")
+        .collection("salle_de_bain")
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((f) {
+        return f.data;
+      });
+    });*/
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    markerName = "salle_de_bain";
+    markerId = "JgW5ha79tm3UBI1r5MPm";
+
+    Category category =
+        Category("JgW5ha79tm3UBI1r5MPm", null, null, "salle_de_bain");
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Phoïkos',
-            style: TextStyle(
-              color: Colors.white,
-            )),
-        centerTitle: true,
-        backgroundColor: Color(0xFF5a9216),
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print('click on search');
-            },
-          )
-        ],
-      ),
       body: Container(
         padding: const EdgeInsets.all(15.0),
         height: 800,
@@ -75,6 +74,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       color: Colors.white,
                     ))),
             //TODO affichage nouveaux articles
+            Container(
+              child: getNewArticles(context),
+            ),
             Container(
                 margin: const EdgeInsets.only(top: 20.0),
                 child: Align(
@@ -107,6 +109,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   }
 
   Widget getArticlesOfTheCategory(markerName, markerId) {
+    print("markerName = $markerName");
+    print("markerID = $markerId");
+
     return FutureBuilder(
         future: db
             .collection("category")
@@ -123,8 +128,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
 
             querySnapshot.data.documents.forEach((element) {
-              print('${element.data}');
-              print('${element.documentID}');
+              print("dans boucle");
+              print("Article ${element.data}");
+              //print('${element.documentID}');
               articles.add(Article.fromJSON(element.data));
             });
 
@@ -159,6 +165,46 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
         .collection('salle_de_bain')
         .getDocuments();
     return listArticles.documents;
+  }
+
+  Widget getNewArticles(BuildContext context) {
+    return FutureBuilder(
+        future: db.collection("nouveaux_articles").getDocuments(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            List<Article> articles = [];
+
+            var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
+
+            querySnapshot.data.documents.forEach((element) {
+              print("Nouvel article ${element.data}");
+              //print('${element.documentID}');
+              articles.add(Article.fromJSON(element.data));
+            });
+
+            return GridView.builder(
+                padding: EdgeInsets.only(top: 20),
+                shrinkWrap: true,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3),
+                itemCount: articles.length,
+                itemBuilder: (context, index) {
+                  return FlatButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
+                    child: Text(
+                      articles[index].name,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    color: Color.fromRGBO(35, 66, 57, 0.94),
+                  );
+                });
+          }
+          return Center(child: CircularProgressIndicator());
+        });
   }
 
   Widget _createNewArticles() {
@@ -196,6 +242,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             print('${element.data}');
             print('${element.documentID}');
             categories.add(Category.fromJSON(element.documentID, element.data));
+            print("element.data ${element.data}");
           });
           return /*GridView.builder(
                   padding: EdgeInsets.only(top: 20),
@@ -230,8 +277,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                   ),
                   backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
                   onPressed: () {
-                    return getArticlesOfTheCategory(
-                        categories[0].collection, categories[0].id);
+                    return blockGetArticlesOfTheCategory(categories[0]);
                   }),
               ActionChip(
                   label: Text(
@@ -242,8 +288,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                   ),
                   backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
                   onPressed: () {
-                    return getArticlesOfTheCategory(
-                        categories[1].collection, categories[1].id);
+                    return blockGetArticlesOfTheCategory(categories[1]);
                   }),
               ActionChip(
                   label: Text(
