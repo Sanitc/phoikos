@@ -1,38 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phoikos/page/main_page.dart';
+import 'package:phoikos/page/profile_page.dart';
 import 'package:phoikos/utils/constants.dart';
 
-import 'login_page.dart';
-
-class ForgetPasswordPageWidget extends StatefulWidget {
+class ChangePWDPageWidget extends StatefulWidget {
   @override
-  _ForgetPasswordPageWidgetState createState() =>
-      _ForgetPasswordPageWidgetState();
+  _ChangePWDPageWidgetState createState() => _ChangePWDPageWidgetState();
 }
 
-class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
-  Widget _buildMDPOubliePage() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Text(
-            'MOT DE PASSE OUBLIE',
-            style: ChangePage,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEmailTF() {
+class _ChangePWDPageWidgetState extends State<ChangePWDPageWidget> {
+  Widget _buildPasswordTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Email',
+          'Mot de Passe',
           style: kLabelStyle,
         ),
         SizedBox(height: 10.0),
@@ -41,7 +23,7 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            keyboardType: TextInputType.emailAddress,
+            obscureText: true,
             style: TextStyle(
               color: Colors.grey,
               fontFamily: 'OpenSans',
@@ -50,10 +32,46 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
-                Icons.email,
+                Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Tapez votre adresse email',
+              hintText: 'Tapez votre Mot de Passe',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+      ],
+    );
+  }
+
+  Widget _buildPasswordIsOkTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Confirmation du mot de passe',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              hintText: 'Tapez votre Mot de Passe',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -62,24 +80,24 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
     );
   }
 
-  Widget _buildSendBtn() {
+  Widget _buildChangePWDBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: goToHomePage,
+        onPressed: goToProfilePage,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         color: Color.fromRGBO(115, 44, 30, 0.81),
         child: Text(
-          'Valider',
+          'Changer mon mot de passe',
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 1.5,
-            fontSize: 18.0,
+            fontSize: 16.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
@@ -88,23 +106,25 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
     );
   }
 
-  Widget _buildBackLoginPage() {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        onPressed: () => goToSigninPage(),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Retour à la connexion?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('profile',
+            style: TextStyle(
+              color: Colors.white,
+            )),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              print('click on search');
+            },
+          )
+        ],
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -138,24 +158,17 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 50.0,
+                    vertical: 120.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 30.0),
-                      Image(
-                        image:
-                            AssetImage('assets/images/logo/phoikos_title.png'),
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildMDPOubliePage(),
+                      _buildPasswordTF(),
                       SizedBox(
                         height: 30.0,
                       ),
-                      _buildEmailTF(),
-                      _buildSendBtn(),
-                      _buildBackLoginPage(),
+                      _buildPasswordIsOkTF(),
+                      _buildChangePWDBtn(),
                     ],
                   ),
                 ),
@@ -167,15 +180,9 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
     );
   }
 
-  void goToHomePage() {
+  void goToProfilePage() {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return MainPageWidget();
-    }));
-  }
-
-  void goToSigninPage() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return LoginPageWidget();
+      return ProfilePageWidget();
     }));
   }
 }

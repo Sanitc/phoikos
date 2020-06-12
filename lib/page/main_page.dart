@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:phoikos/page/partner_page.dart';
 import 'package:phoikos/page/phoikos_team_page.dart';
 import 'package:phoikos/page/profile_page.dart';
+import 'package:phoikos/page/search_page.dart';
 import 'package:phoikos/screen/favorite_screen.dart';
 import 'package:phoikos/screen/home_screen.dart';
 import 'package:phoikos/screen/map_screen.dart';
@@ -41,7 +42,7 @@ class _MainPageWidgetState extends State<MainPageWidget> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              print('click on search');
+              goToSearchPage();
             },
           )
         ],
@@ -167,5 +168,11 @@ class _MainPageWidgetState extends State<MainPageWidget> {
         child: child,
       ),
     );
+  }
+
+  void goToSearchPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return SearchPageWidget();
+    }));
   }
 }

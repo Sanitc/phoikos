@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoikos/page/search_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class PartnerPagePageWidget extends StatefulWidget {
@@ -21,7 +22,7 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              print('click on search');
+              goToSearchPage();
             },
           )
         ],
@@ -131,6 +132,12 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
         ),
       ],
     );
+  }
+
+  void goToSearchPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return SearchPageWidget();
+    }));
   }
 }
 

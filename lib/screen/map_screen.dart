@@ -96,7 +96,7 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
                     position: _offsetAnimation,
                     child: FittedBox(
                       child: Material(
-                        color: Color.fromRGBO(228, 101, 76, 0.9),
+                        color: Color.fromRGBO(228, 101, 76, 0.75),
                         elevation: 14.0,
                         borderRadius: BorderRadius.circular(14.0),
                         shadowColor: Colors.grey,
@@ -124,21 +124,7 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
                           ],
                         ),
                       ),
-                    ), /*Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromRGBO(228, 101, 76, 0.84),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12.0),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: new Offset(2.0, 2.0),
-                          )
-                        ],
-                      ),
-                      height: 120.0,
-                    ),*/
+                    ),
                   ),
                 )
               : Container()
