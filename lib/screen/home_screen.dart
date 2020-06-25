@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/model/Category.dart';
+import 'package:phoikos/services/articles_page_accueil.dart';
 import 'package:phoikos/services/image_downloader.dart';
 
 //enum WidgetMarker { }
@@ -14,8 +15,8 @@ class HomeScreenWidget extends StatefulWidget {
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   final db = Firestore.instance;
 
-  var markerName;
-  var markerId;
+  final markerName = new ValueNotifier("salle_de_bain");
+  final markerId = new ValueNotifier("JgW5ha79tm3UBI1r5MPm");
 
   @override
   void initState() {
@@ -41,16 +42,13 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    markerName = "salle_de_bain";
-    markerId = "JgW5ha79tm3UBI1r5MPm";
-
     Category category =
         Category("JgW5ha79tm3UBI1r5MPm", null, null, "salle_de_bain");
 
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(15.0),
-        height: 800,
+        //height: 800,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -74,9 +72,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       color: Colors.white,
                     ))),
             //TODO affichage nouveaux articles
-            Container(
+            /*Container(
               child: getNewArticles(context),
-            ),
+            ),*/
             Container(
                 margin: const EdgeInsets.only(top: 20.0),
                 child: Align(
@@ -90,10 +88,8 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               alignment: Alignment.centerLeft,
               child: getChipCategoryName(context),
             ),
-            Container(
-                //height: 200,
-                //color: Colors.white,
-                child: blockGetArticlesOfTheCategory(category))
+            LoadArticlesOfCategory(markerName, category.id)
+            //blockGetArticlesOfTheCategory(category))
             //Expanded(child: _categoryButtonView()), //LoadFirebaseStorageImage()
           ],
         ),
@@ -101,62 +97,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     );
   }
 
-  Widget blockGetArticlesOfTheCategory(Category category) {
+  /*blockGetArticlesOfTheCategory(Category category) {
     markerName = category.collection;
     markerId = category.id;
 
-    return getArticlesOfTheCategory(markerName, markerId);
-  }
-
-  Widget getArticlesOfTheCategory(markerName, markerId) {
-    print("markerName = $markerName");
-    print("markerID = $markerId");
-
-    return FutureBuilder(
-        future: db
-            .collection("category")
-            .document(markerId)
-            .collection(markerName)
-            .getDocuments(), //db.collection("category").getDocuments(),
-        builder: (context, snapshot) {
-          //var querySnapshot = snapshot;
-
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
-            List<Article> articles = [];
-
-            var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
-
-            querySnapshot.data.documents.forEach((element) {
-              print("dans boucle");
-              print("Article ${element.data}");
-              //print('${element.documentID}');
-              articles.add(Article.fromJSON(element.data));
-            });
-
-            return GridView.builder(
-                padding: EdgeInsets.only(top: 20),
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
-                itemCount: articles.length,
-                itemBuilder: (context, index) {
-                  return FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      articles[index].name,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    color: Color.fromRGBO(35, 66, 57, 0.94),
-                  );
-                });
-          }
-          return Center(child: CircularProgressIndicator());
-        });
-  }
+    LoadArticlesOfCategory(markerName, markerId);
+  }*/
 
   Future getList() async {
     QuerySnapshot listArticles = await db
@@ -178,28 +124,32 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
 
             querySnapshot.data.documents.forEach((element) {
-              print("Nouvel article ${element.data}");
+              print("Nouvel article ${element.documentID}");
               //print('${element.documentID}');
               articles.add(Article.fromJSON(element.data));
             });
 
-            return GridView.builder(
-                padding: EdgeInsets.only(top: 20),
+            return ListView.builder(
+                //padding: EdgeInsets.only(top: 20),
                 shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                //scrollDirection: Axis.horizontal,
+                //gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                //    crossAxisCount: 3),
                 itemCount: articles.length,
                 itemBuilder: (context, index) {
-                  return FlatButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                    child: Text(
-                      articles[index].name,
-                      style: TextStyle(
-                        color: Colors.white,
+                  return Container(
+                    width: 20,
+                    child: Card(
+                      //margin: EdgeInsets.all(15),
+                      child: InkWell(
+                        //onTap: ,
+                        child: new GridTile(
+                          footer: new Text(articles[index].name),
+                          child: LoadFirebaseStorageImage(
+                              articles[index].image, 10, 10, null),
+                        ),
                       ),
                     ),
-                    color: Color.fromRGBO(35, 66, 57, 0.94),
                   );
                 });
           }
@@ -265,56 +215,65 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       ),
                       color: Color.fromRGBO(35, 66, 57, 0.94),
                     );*/
-              Wrap(
-            spacing: 20,
-            children: <Widget>[
-              ActionChip(
-                  label: Text(
-                    categories[0].name,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                  onPressed: () {
-                    return blockGetArticlesOfTheCategory(categories[0]);
-                  }),
-              ActionChip(
-                  label: Text(
-                    categories[1].name,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                  onPressed: () {
-                    return blockGetArticlesOfTheCategory(categories[1]);
-                  }),
-              ActionChip(
-                  label: Text(
-                    categories[2].name,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                  onPressed: () {
-                    return getArticlesOfTheCategory(
-                        categories[2].collection, categories[2].id);
-                  }),
-              ActionChip(
-                  label: Text(
-                    categories[3].name,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                  onPressed: () {
-                    return getArticlesOfTheCategory(
-                        categories[3].collection, categories[3].id);
-                  })
-            ],
+              ValueListenableBuilder<String>(
+            valueListenable: markerName,
+            builder: (context, value, child) {
+              return Wrap(
+                spacing: 20,
+                children: <Widget>[
+                  ActionChip(
+                      label: Text(
+                        categories[0].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                      onPressed: () {
+                        markerName.value = "${categories[0].collection}";
+                        LoadArticlesOfCategory(markerName, categories[0].id);
+                        /*return LoadArticlesOfCategory(
+                                categories[0].collection, categories[0].id);*/
+                      }),
+                  ActionChip(
+                      label: Text(
+                        categories[1].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                      onPressed: () {
+                        markerName.value = "${categories[1].collection}";
+                        LoadArticlesOfCategory(markerName, categories[1].id);
+                      }),
+                  ActionChip(
+                      label: Text(
+                        categories[2].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                      onPressed: () {
+                        markerName.value = "${categories[2].collection}";
+                        LoadArticlesOfCategory(markerName, categories[2].id);
+                      }),
+                  ActionChip(
+                      label: Text(
+                        categories[3].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                      onPressed: () {
+                        markerName.value = "${categories[3].collection}";
+                        LoadArticlesOfCategory(markerName, categories[3].id);
+                      })
+                ],
+              );
+            },
           );
         }
         return Center(child: CircularProgressIndicator());
@@ -326,7 +285,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
     return FutureBuilder(
       future: db.collection("category").getDocuments(),
       builder: (context, snapshot) {
-        print('snapshot ${snapshot}');
+        print('snapshot $snapshot');
 
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {

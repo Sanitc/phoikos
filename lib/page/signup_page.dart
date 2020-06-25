@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phoikos/page/main_page.dart';
+import 'package:phoikos/services/firestore_user.dart';
 import 'package:phoikos/utils/constants.dart';
 
 import 'login_page.dart';
@@ -13,6 +14,27 @@ class SignUpPageWidget extends StatefulWidget {
 
 class _SignUpPageWidgetState extends State<SignUpPageWidget> {
   bool _rememberMe = false;
+  TextEditingController textMail;
+  TextEditingController textMdp1;
+  TextEditingController textMdp2;
+
+  @override
+  void initState() {
+    super.initState();
+
+    textMail = TextEditingController();
+    textMdp1 = TextEditingController();
+    textMdp2 = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    textMail.dispose();
+    textMdp1.dispose();
+    textMdp2.dispose();
+
+    super.dispose();
+  }
 
   Widget _buildSignupPage() {
     return Row(
@@ -60,6 +82,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: textMail,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.grey,
@@ -70,7 +93,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.email,
-                color: Colors.white,
+                color: Colors.black,
               ),
               hintText: 'Tapez votre adresse email',
               hintStyle: kHintTextStyle,
@@ -96,6 +119,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: textMdp1,
             obscureText: true,
             style: TextStyle(
               color: Colors.grey,
@@ -132,6 +156,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: textMdp2,
             obscureText: true,
             style: TextStyle(
               color: Colors.grey,
@@ -246,9 +271,24 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
   }
 
   void goToHomePage() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return MainPageWidget();
-    }));
+    String mail = textMail.text.trim();
+    String mdp1 = textMdp1.text.trim();
+    String mdp2 = textMdp2.text.trim();
+
+    if (mail != "") {
+      if (mdp1 != "") {
+        if (mdp2 != "") {
+          if (mdp1 == mdp2) {
+            FirestoreUserPhoikos().createAccount(
+                mail, mdp1); //trim pour enlever les espaces en trop
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return MainPageWidget();
+            }));
+          }
+        }
+      }
+    }
   }
 
   void goToSigninPage() {
