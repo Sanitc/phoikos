@@ -18,6 +18,8 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
   TextEditingController textMdp1;
   TextEditingController textMdp2;
 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -118,7 +120,12 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
+            validator: (String value) {
+              if (value.isEmpty) {
+                return "L'adress mail ne peut être vide";
+              }
+            },
             controller: textMdp1,
             obscureText: true,
             style: TextStyle(
@@ -132,7 +139,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
                 Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Tapez votre Mot de Passe',
+              hintText: 'Tapez votre mot de passe',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -169,7 +176,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
                 Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Tapez votre Mot de Passe',
+              hintText: 'Tapez votre mot de passe',
               hintStyle: kHintTextStyle,
             ),
           ),

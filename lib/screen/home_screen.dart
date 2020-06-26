@@ -84,9 +84,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                           fontSize: 20,
                           color: Colors.white,
                         )))),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: getChipCategoryName(context),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: getChipCategoryName(context),
+              ),
             ),
             LoadArticlesOfCategory(markerName, category.id)
             //blockGetArticlesOfTheCategory(category))
@@ -194,28 +197,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             categories.add(Category.fromJSON(element.documentID, element.data));
             print("element.data ${element.data}");
           });
-          return /*GridView.builder(
-                  padding: EdgeInsets.only(top: 20),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return FlatButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      onPressed: () {
-                        //TODO: changer la gridview en dessous
-                      },
-                      child: Text(
-                        categories[index].name,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      color: Color.fromRGBO(35, 66, 57, 0.94),
-                    );*/
-              ValueListenableBuilder<String>(
+          return ValueListenableBuilder<String>(
             valueListenable: markerName,
             builder: (context, value, child) {
               return Wrap(
@@ -270,6 +252,18 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       onPressed: () {
                         markerName.value = "${categories[3].collection}";
                         LoadArticlesOfCategory(markerName, categories[3].id);
+                      }),
+                  ActionChip(
+                      label: Text(
+                        categories[4].name,
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                      onPressed: () {
+                        markerName.value = "${categories[4].collection}";
+                        LoadArticlesOfCategory(markerName, categories[4].id);
                       })
                 ],
               );

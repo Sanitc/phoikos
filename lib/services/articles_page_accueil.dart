@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:phoikos/model/Article.dart';
+import 'package:phoikos/screen/article_screen.dart';
 import 'package:phoikos/services/image_downloader.dart';
 
 class LoadArticlesOfCategory extends StatefulWidget {
@@ -61,7 +62,12 @@ class _LoadArticlesOfCategoryState extends State<LoadArticlesOfCategory> {
                   return new Card(
                     margin: EdgeInsets.all(15),
                     child: InkWell(
-                      //onTap: ,
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return ArticleScreenWidget(articles[index]);
+                        }));
+                      },
                       child: new GridTile(
                         footer: new Text(articles[index].name),
                         child: LoadFirebaseStorageImage(
@@ -151,5 +157,11 @@ class _LoadArticlesOfCategoryState extends State<LoadArticlesOfCategory> {
           }
           return Center(child: CircularProgressIndicator());
         });
+  }
+
+  _goToArticlePage(Article article) {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return ArticleScreenWidget(article);
+    }));
   }
 }

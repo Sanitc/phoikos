@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:phoikos/page/forget_password_page.dart';
 import 'package:phoikos/page/main_page.dart';
 import 'package:phoikos/page/signup_page.dart';
+import 'package:phoikos/services/firestore_user.dart';
 import 'package:phoikos/utils/constants.dart';
 
 class LoginPageWidget extends StatefulWidget {
@@ -13,6 +14,25 @@ class LoginPageWidget extends StatefulWidget {
 
 class _LoginPageWidgetState extends State<LoginPageWidget> {
   bool _rememberMe = false;
+
+  TextEditingController textMail;
+  TextEditingController textMdp;
+
+  @override
+  void initState() {
+    super.initState();
+
+    textMail = TextEditingController();
+    textMdp = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    textMail.dispose();
+    textMdp.dispose();
+
+    super.dispose();
+  }
 
   Widget _buildSignupPage() {
     return Row(
@@ -60,6 +80,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: textMail,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.grey,
@@ -96,6 +117,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: textMdp,
             obscureText: true,
             style: TextStyle(
               color: Colors.grey,
@@ -108,7 +130,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Tapez votre Mot de Passe',
+              hintText: 'Tapez votre mot de passe',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -151,7 +173,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
         onPressed: () => goToForgetPWD(),
         padding: EdgeInsets.only(right: 0.0),
         child: Text(
-          'Mot de passe oublié?',
+          'Mot de passe oublié ?',
           style: kLabelStyle,
         ),
       ),
@@ -254,9 +276,19 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
   }
 
   void goToHomePage() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return MainPageWidget();
-    }));
+    String mail = textMail.text.trim();
+    String mdp1 = textMdp.text.trim();
+
+    if (mail != "") {
+      if (mdp1 != "") {
+        FirestoreUserPhoikos().connectToAccount(
+            mail, mdp1); //trim pour enlever les espaces en trop
+        Navigator.push(context,
+            MaterialPageRoute(builder: (BuildContext context) {
+          return MainPageWidget();
+        }));
+      }
+    }
   }
 
   void goToSignUpPage() {
