@@ -52,7 +52,50 @@ class _LoadArticlesOfCategoryState extends State<LoadArticlesOfCategory> {
               articles.add(Article.fromJSON(element.data));
             });
 
-            return GridView.builder(
+            return ListView.separated(
+              padding: EdgeInsets.only(top: 20),
+              cacheExtent: 100.0,
+              shrinkWrap: true,
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 100,
+                        height: 100,
+                        child: ClipRRect(
+                          borderRadius: new BorderRadius.circular(8.0),
+                          child: LoadFirebaseStorageImage(
+                              articles[index].image, 10, 10, null),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                            title: new Text(
+                          articles[index].name,
+                          style: TextStyle(color: Colors.white),
+                        )),
+                      )
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) {
+                      return ArticleScreenWidget(articles[index]);
+                    }));
+                  },
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+            );
+
+            GridView.builder(
                 //padding: EdgeInsets.only(top: 20),
                 shrinkWrap: true,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -75,6 +118,7 @@ class _LoadArticlesOfCategoryState extends State<LoadArticlesOfCategory> {
                       ),
                     ),
                   );
+
                   /*ListView(
                     scrollDirection: Axis.vertical,
                     children: <Widget>[*/
