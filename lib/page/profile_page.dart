@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phoikos/page/change_pwd_page.dart';
 import 'package:phoikos/page/search_page.dart';
+import 'package:phoikos/services/firestore_user.dart';
 import 'package:phoikos/utils/constants.dart';
 
 import 'login_page.dart';
@@ -42,7 +43,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
               children: <Widget>[
                 Center(
                   child: Text(
-                    'user@phoikos.fr',
+                    "current user",
                     style: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.bold,
@@ -78,7 +79,10 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: GestureDetector(
-          onTap: () => goToLoginPage(),
+          onTap: () {
+            FirestoreUserPhoikos().signOut();
+            goToLoginPage();
+          },
           child: Column(
             children: <Widget>[
               Image.asset(
@@ -105,7 +109,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('profil',
+        title: Text('Profil',
             style: TextStyle(
               color: Colors.white,
             )),

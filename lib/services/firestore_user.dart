@@ -35,4 +35,6 @@ class FirestoreUserPhoikos {
   }
 
   signOut() => firebaseAuth.signOut();
+
+  ///TODO: email of the currentuser
 }
