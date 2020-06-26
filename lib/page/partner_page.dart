@@ -55,12 +55,12 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
     isCloseButton: false,
     isOverlayTapDismiss: false,
     //descStyle: TextStyle(fontWeight: FontWeight.bold),
-    backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+    backgroundColor: Color.fromRGBO(228, 101, 76, 0.75),
     animationDuration: Duration(milliseconds: 400),
     alertBorder: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24.0),
       side: BorderSide(
-        color: Color.fromRGBO(23, 69, 58, 0.81),
+        color: Color.fromRGBO(228, 101, 76, 0.75),
       ),
     ),
     titleStyle: TextStyle(
@@ -121,7 +121,7 @@ class _PartnerPageWidgetState extends State<PartnerPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color.fromRGBO(46, 137, 116, 0.81),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),

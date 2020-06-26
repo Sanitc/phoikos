@@ -4,6 +4,8 @@ import 'package:phoikos/page/change_pwd_page.dart';
 import 'package:phoikos/page/search_page.dart';
 import 'package:phoikos/utils/constants.dart';
 
+import 'login_page.dart';
+
 class ProfilePageWidget extends StatefulWidget {
   @override
   _ProfilePageWidgetState createState() => _ProfilePageWidgetState();
@@ -71,6 +73,34 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
     );
   }
 
+  Widget _buildLogoutBtn() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25.0),
+      width: double.infinity,
+      child: GestureDetector(
+          onTap: () => goToLoginPage(),
+          child: Column(
+            children: <Widget>[
+              Image.asset(
+                'assets/images/button/btnLogout.png',
+                width: 50,
+                height: 50,
+                color: Colors.white,
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Déconnexion',
+                style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'roboto'),
+              )
+            ],
+          )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,6 +164,7 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
                         height: 30.0,
                       ),
                       _buildForgotPasswordBtn(),
+                      _buildLogoutBtn()
                     ],
                   ),
                 ),
@@ -154,6 +185,12 @@ class _ProfilePageWidgetState extends State<ProfilePageWidget> {
   void goToSearchPage() {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
       return SearchPageWidget();
+    }));
+  }
+
+  void goToLoginPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return LoginPageWidget();
     }));
   }
 }
