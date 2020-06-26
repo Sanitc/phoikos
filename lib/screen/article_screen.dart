@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/services/image_downloader.dart';
 
@@ -13,33 +13,106 @@ class ArticleScreenWidget extends StatefulWidget {
 }
 
 class _ArticleDetailPageState extends State<ArticleScreenWidget> {
-  /*ArticleScreenWidget(this.index);
-  final int index;*/
-  final db = Firestore.instance;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  Widget _buildPhotoArticle() {
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      Column(
+        children: <Widget>[
+          Padding(
+              padding: EdgeInsets.all(25.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: LoadFirebaseStorageImage(
+                    widget.article.image, 200, 30, "article"),
+              )),
+        ],
+      )
+    ]);
+  }
+
+  Widget _buildTitleAndFav() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: ListTile(
+        title: Text(
+          widget.article.name,
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        trailing: new Icon(
+          Icons.favorite,
+          color: Color.fromRGBO(228, 101, 76, 0.81),
+        ),
+        onTap: () {
+          //here code to add or remove fav
+        },
+      ),
+    );
+  }
+
+  Widget _buildIntro() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: widget.article.intro,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPara1() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: widget.article.para_1,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPara2() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: widget.article.para_2,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    String _nameImage = widget.article.name;
-    String _articleTitle = widget.article.image;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.article.name),
-        /*title: StreamBuilder(
-          stream: db.collection("article").snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.data == null) return CircularProgressIndicator();
-
-            _articleTitle = "${snapshot.data.documents[index]['title']}";
-            return Text(
-              _articleTitle,
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            );
-          },
-        ),*/
         centerTitle: true,
-        backgroundColor: Color(0xFF5a9216),
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
@@ -49,89 +122,53 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
           )
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFbef67a),
-              Color(0xFF8bc34a),
-              Color(0xFF5a9216),
-            ],
-            stops: [0.1, 0.4, 0.9],
-          ),
-        ),
-        child: Center(
-          child: Column(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Stack(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: Text(widget.article.name),
-                /*child: StreamBuilder(
-                  stream: db.collection("article").snapshots(),
-                  builder: (context, snapshot) {
-                    _articleContent =
-                        "${snapshot.data.documents[index]['introduction']}";
-                    return RichText(
-                        textAlign: TextAlign.justify,
-                        text: TextSpan(text: _articleContent));
-                  },
-                ),*/
-              ),
-              Padding(
-                  padding: EdgeInsets.all(25.0),
-                  child:
-                      LoadFirebaseStorageImage(_nameImage, 200, 30, "article")
-                  /*child: StreamBuilder(
-                    stream: db.collection("article").snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.data == null)
-                        return CircularProgressIndicator();
-                      _nameImage = "${snapshot.data.documents[index]['photo']}";
-                      return LoadFirebaseStorageImage(
-                          _nameImage, 200, 30, "article");
-                    },
-                  )*/
+              Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0.1, 0.5, 0.9],
+                    colors: [
+                      Color.fromRGBO(23, 69, 58, 0.81),
+                      Color.fromRGBO(46, 137, 116, 0.81),
+                      Color.fromRGBO(65, 236, 133, 0.56)
+                    ],
                   ),
-              /*Padding(
-                  padding: EdgeInsets.all(25.0),
-                  child: Container(
-                    color: Colors.lightBlueAccent,
-                    child: new LoadFirebaseStorageImage(_nameImage),
-                  )
-
-                  /*Image(
-                  image: AssetImage('assets/images/category_1/phoques.jpg'),
-                  height: 200,
-                  width: 300,
-                ), */
+                  /*image: DecorationImage(
+                    image:
+                        AssetImage("assets/images/background/background.png"),
+                    fit: BoxFit.cover,
                   ),*/
-              //if para_1 != null then afficher padding
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0),
-                  child: RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(text: widget.article.name))),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.0),
-                  child: RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(text: widget.article.name))),
-              /*Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30.0),
-                child: StreamBuilder(
-                  stream: db.collection("article").snapshots(),
-                  builder: (context, snapshot) {
-                    _articleContent =
-                        "${snapshot.data.documents[index]['paragraphe_3']}";
-                    if (_articleContent == null) return Text("coucou");
-                    return RichText(
-                        textAlign: TextAlign.justify,
-                        text: TextSpan(text: _articleContent));
-                  },
                 ),
-              ),*/
+              ),
+              Container(
+                height: double.infinity,
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 1.0),
+                      _buildPhotoArticle(),
+                      SizedBox(
+                        height: 1.0,
+                      ),
+                      _buildTitleAndFav(),
+                      _buildIntro(),
+                      _buildPara1(),
+                      _buildPara2(),
+                    ],
+                  ),
+                ),
+              )
             ],
           ),
         ),
