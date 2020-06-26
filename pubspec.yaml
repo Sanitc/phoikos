@@ -35,6 +35,7 @@ dependencies:
   rflutter_alert: ^1.0.3
   flappy_search_bar: 1.4.1
   splashscreen: ^1.2.0
+  awesome_dialog: ^1.1.2
   firebase_auth: ^0.16.1
 
 dev_dependencies:
@@ -60,6 +61,7 @@ flutter:
     - assets/images/team/
     - assets/images/background/
     - assets/images/logo/
+    - assets/images/button/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
