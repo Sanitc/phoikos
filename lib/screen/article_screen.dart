@@ -4,7 +4,6 @@ import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/services/image_downloader.dart';
 
 class ArticleScreenWidget extends StatefulWidget {
-  /*extends StatelessWidget {*/
   final Article article;
 
   ArticleScreenWidget(this.article);
