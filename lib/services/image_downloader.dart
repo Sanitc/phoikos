@@ -10,6 +10,7 @@ class LoadFirebaseStorageImage extends StatelessWidget {
   final double heightImage;
   final double widthImage;
 
+  //snpashot de Storage à un instant T
   static Future<dynamic> loadImage(BuildContext context, String image) async {
     return await FirebaseStorage.instance.ref().child(image).getDownloadURL();
   }
@@ -17,7 +18,7 @@ class LoadFirebaseStorageImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //Image Loading code goes here
+      //Future Builder créé avec le snapshot créé plus haut
       child: FutureBuilder(
         future: loadImage(context, imageName),
         builder: (context, snapshot) {
@@ -27,7 +28,8 @@ class LoadFirebaseStorageImage extends StatelessWidget {
               height: 200,
               width: 300,
               child: snapshot.data != null
-                  ? Image.network(snapshot.data, fit: BoxFit.fitWidth)
+                  ? Image.network(snapshot.data,
+                      fit: BoxFit.cover) //cover = fit la boite
                   : Container(),
             );
           if (snapshot.connectionState == ConnectionState.done &&
@@ -36,7 +38,17 @@ class LoadFirebaseStorageImage extends StatelessWidget {
               height: heightImage, //200,
               width: widthImage, //300,
               child: snapshot.data != null
-                  ? Image.network(snapshot.data, fit: BoxFit.fitWidth)
+                  ? Image.network(snapshot.data, fit: BoxFit.cover)
+                  : Container(),
+            );
+
+          if (snapshot.connectionState == ConnectionState.done &&
+              photoType == null)
+            return Container(
+              height: heightImage, //200,
+              width: widthImage, //300,
+              child: snapshot.data != null
+                  ? Image.network(snapshot.data, fit: BoxFit.cover)
                   : Container(),
             );
 

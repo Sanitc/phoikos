@@ -1,35 +1,114 @@
 {
   "project_info": {
-    "project_number": "708169926674",
-    "firebase_url": "https://phoikos-e32c9.firebaseio.com",
-    "project_id": "phoikos-e32c9",
-    "storage_bucket": "phoikos-e32c9.appspot.com"
+    "project_number": "669111751937",
+    "firebase_url": "https://phoikos.firebaseio.com",
+    "project_id": "phoikos",
+    "storage_bucket": "phoikos.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:708169926674:android:5eff2e9b451fc9d8ba70cb",
+        "mobilesdk_app_id": "1:669111751937:android:cc1a66eda1cd44a43e3700",
         "android_client_info": {
           "package_name": "com.mydigitalproject.phoikos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "708169926674-eslk29s902o8416vkqrah6mkvqtdji6v.apps.googleusercontent.com",
+          "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCzepeP-YYXvgV5vTHunZqPamBp2m8zmQ4"
+          "current_key": "AIzaSyB2-OIXRyq3xlvgbbdWEmNf7CcfRQalmAY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "708169926674-eslk29s902o8416vkqrah6mkvqtdji6v.apps.googleusercontent.com",
+              "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "669111751937-ddj3kgb8r1ai2dkkueqeclhsl6c7v8fl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mydigitalproject.phoikos"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669111751937:android:9d18093bbc0c02e23e3700",
+        "android_client_info": {
+          "package_name": "com.phoikos.testdatabase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2-OIXRyq3xlvgbbdWEmNf7CcfRQalmAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "669111751937-ddj3kgb8r1ai2dkkueqeclhsl6c7v8fl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mydigitalproject.phoikos"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669111751937:android:4eb91adecad5f6763e3700",
+        "android_client_info": {
+          "package_name": "fr.phoikos.firestoredemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2-OIXRyq3xlvgbbdWEmNf7CcfRQalmAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669111751937-hnkq5s4otdg26pjucf8snu0a9khju73e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "669111751937-ddj3kgb8r1ai2dkkueqeclhsl6c7v8fl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mydigitalproject.phoikos"
+              }
             }
           ]
         }

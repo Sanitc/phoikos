@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoikos/page/search_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class PhoikosTeamPagePageWidget extends StatefulWidget {
@@ -16,12 +17,12 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
               color: Colors.white,
             )),
         centerTitle: true,
-        backgroundColor: Color(0xFF90AB77),
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              print('click on search');
+              goToSearchPage();
             },
           )
         ],
@@ -32,13 +33,12 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
+            stops: [0.1, 0.5, 0.9],
             colors: [
-              Color(0xFFE3FFC7),
-              Color(0xFFC7E2AC),
-              Color(0xFFABC691),
-              Color(0xFF90AB77),
+              Color.fromRGBO(23, 69, 58, 0.81),
+              Color.fromRGBO(46, 137, 116, 0.81),
+              Color.fromRGBO(65, 236, 133, 0.56)
             ],
-            stops: [0.1, 0.4, 0.7, 0.9],
           ),
         ),
         child: Column(
@@ -55,12 +55,12 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
     isCloseButton: false,
     isOverlayTapDismiss: false,
     //descStyle: TextStyle(fontWeight: FontWeight.bold),
-    backgroundColor: Color(0xFFABC691),
+    backgroundColor: Color.fromRGBO(228, 101, 76, 0.75),
     animationDuration: Duration(milliseconds: 400),
     alertBorder: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(24.0),
       side: BorderSide(
-        color: Color(0xFF90AB77),
+        color: Color.fromRGBO(228, 101, 76, 0.75),
       ),
     ),
     titleStyle: TextStyle(
@@ -122,7 +122,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -178,7 +178,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -233,7 +233,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -289,7 +289,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -344,7 +344,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -399,7 +399,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -455,7 +455,7 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
                   DialogButton(
                     onPressed: () => Navigator.pop(context),
                     radius: BorderRadius.circular(24.0),
-                    color: Color(0xFFC7E2AC),
+                    color: Color.fromRGBO(228, 101, 76, 0.75),
                     child: Text(
                       "Fermer",
                       style: TextStyle(color: Color(0xFFFFFFE3), fontSize: 20),
@@ -466,6 +466,12 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
         ),
       ],
     );
+  }
+
+  void goToSearchPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return SearchPageWidget();
+    }));
   }
 }
 

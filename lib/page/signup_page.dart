@@ -1,35 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phoikos/page/forget_password_page.dart';
 import 'package:phoikos/page/main_page.dart';
-import 'package:phoikos/page/signup_page.dart';
 import 'package:phoikos/services/firestore_user.dart';
 import 'package:phoikos/utils/constants.dart';
 
-class LoginPageWidget extends StatefulWidget {
+import 'login_page.dart';
+
+class SignUpPageWidget extends StatefulWidget {
   @override
-  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+  _SignUpPageWidgetState createState() => _SignUpPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
+class _SignUpPageWidgetState extends State<SignUpPageWidget> {
   bool _rememberMe = false;
-
   TextEditingController textMail;
-  TextEditingController textMdp;
+  TextEditingController textMdp1;
+  TextEditingController textMdp2;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
 
     textMail = TextEditingController();
-    textMdp = TextEditingController();
+    textMdp1 = TextEditingController();
+    textMdp2 = TextEditingController();
   }
 
   @override
   void dispose() {
     textMail.dispose();
-    textMdp.dispose();
+    textMdp1.dispose();
+    textMdp2.dispose();
 
     super.dispose();
   }
@@ -43,10 +47,11 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             child: Container(
               height: 50,
               child: Center(
-                child: Text("CONNEXION", style: ChangePage),
+                child: Text("CONNEXION", style: kLabelStyle),
               ),
             ),
           ),
+          onTap: goToSigninPage,
         ),
         SizedBox(
           width: 30,
@@ -56,11 +61,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
             child: Container(
               height: 50,
               child: Center(
-                child: Text("INSCRIPTION", style: kLabelStyle),
+                child: Text("INSCRIPTION", style: ChangePage),
               ),
             ),
           ),
-          onTap: goToSignUpPage,
         ),
       ],
     );
@@ -91,7 +95,7 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.email,
-                color: Colors.white,
+                color: Colors.black,
               ),
               hintText: 'Tapez votre adresse email',
               hintStyle: kHintTextStyle,
@@ -116,8 +120,50 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
+          child: TextFormField(
+            validator: (String value) {
+              if (value.isEmpty) {
+                return "L'adress mail ne peut être vide";
+              }
+            },
+            controller: textMdp1,
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              hintText: 'Tapez votre mot de passe',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+      ],
+    );
+  }
+
+  Widget _buildPasswordIsOkTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Confirmation du mot de passe',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
           child: TextField(
-            controller: textMdp,
+            controller: textMdp2,
             obscureText: true,
             style: TextStyle(
               color: Colors.grey,
@@ -136,47 +182,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Text(
-            'Se souvenir de moi',
-            style: kLabelStyle,
-          ),
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Color.fromRGBO(115, 44, 30, 0.81),
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        onPressed: () => goToForgetPWD(),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Mot de passe oublié ?',
-          style: kLabelStyle,
-        ),
-      ),
     );
   }
 
@@ -257,13 +262,10 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                       SizedBox(
                         height: 30.0,
                       ),
-
                       _buildEmailTF(),
                       _buildPasswordTF(),
-                      _buildRememberMeCheckbox(),
+                      _buildPasswordIsOkTF(),
                       _buildLoginBtn(),
-                      _buildForgotPasswordBtn(),
-                      //_buildSignupBtn(),
                     ],
                   ),
                 ),
@@ -277,29 +279,28 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
 
   void goToHomePage() {
     String mail = textMail.text.trim();
-    String mdp1 = textMdp.text.trim();
+    String mdp1 = textMdp1.text.trim();
+    String mdp2 = textMdp2.text.trim();
 
     if (mail != "") {
       if (mdp1 != "") {
-        FirestoreUserPhoikos().connectToAccount(
-            mail, mdp1); //trim pour enlever les espaces en trop
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) {
-          return MainPageWidget();
-        }));
+        if (mdp2 != "") {
+          if (mdp1 == mdp2) {
+            FirestoreUserPhoikos().createAccount(
+                mail, mdp1); //trim pour enlever les espaces en trop
+            Navigator.push(context,
+                MaterialPageRoute(builder: (BuildContext context) {
+              return MainPageWidget();
+            }));
+          }
+        }
       }
     }
   }
 
-  void goToSignUpPage() {
+  void goToSigninPage() {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return SignUpPageWidget();
-    }));
-  }
-
-  goToForgetPWD() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return ForgetPasswordPageWidget();
+      return LoginPageWidget();
     }));
   }
 }

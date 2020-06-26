@@ -1,108 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:phoikos/page/forget_password_page.dart';
-import 'package:phoikos/page/main_page.dart';
-import 'package:phoikos/page/signup_page.dart';
-import 'package:phoikos/services/firestore_user.dart';
+import 'package:phoikos/page/profile_page.dart';
 import 'package:phoikos/utils/constants.dart';
 
-class LoginPageWidget extends StatefulWidget {
+class ChangePWDPageWidget extends StatefulWidget {
   @override
-  _LoginPageWidgetState createState() => _LoginPageWidgetState();
+  _ChangePWDPageWidgetState createState() => _ChangePWDPageWidgetState();
 }
 
-class _LoginPageWidgetState extends State<LoginPageWidget> {
-  bool _rememberMe = false;
-
-  TextEditingController textMail;
-  TextEditingController textMdp;
-
-  @override
-  void initState() {
-    super.initState();
-
-    textMail = TextEditingController();
-    textMdp = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    textMail.dispose();
-    textMdp.dispose();
-
-    super.dispose();
-  }
-
-  Widget _buildSignupPage() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        GestureDetector(
-          child: Expanded(
-            child: Container(
-              height: 50,
-              child: Center(
-                child: Text("CONNEXION", style: ChangePage),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        GestureDetector(
-          child: Expanded(
-            child: Container(
-              height: 50,
-              child: Center(
-                child: Text("INSCRIPTION", style: kLabelStyle),
-              ),
-            ),
-          ),
-          onTap: goToSignUpPage,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildEmailTF() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Adresse mail',
-          style: kLabelStyle,
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextField(
-            controller: textMail,
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(
-              color: Colors.grey,
-              fontFamily: 'OpenSans',
-            ),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.white,
-              ),
-              hintText: 'Tapez votre adresse email',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
-        SizedBox(height: 10.0),
-      ],
-    );
-  }
-
+class _ChangePWDPageWidgetState extends State<ChangePWDPageWidget> {
   Widget _buildPasswordTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +23,6 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
-            controller: textMdp,
             obscureText: true,
             style: TextStyle(
               color: Colors.grey,
@@ -130,7 +35,43 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                 Icons.lock,
                 color: Colors.white,
               ),
-              hintText: 'Tapez votre mot de passe',
+              hintText: 'Tapez votre Mot de Passe',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+      ],
+    );
+  }
+
+  Widget _buildPasswordIsOkTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Confirmation du mot de passe',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextField(
+            obscureText: true,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              hintText: 'Tapez votre Mot de Passe',
               hintStyle: kHintTextStyle,
             ),
           ),
@@ -139,65 +80,24 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     );
   }
 
-  Widget _buildRememberMeCheckbox() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: <Widget>[
-          Text(
-            'Se souvenir de moi',
-            style: kLabelStyle,
-          ),
-          Theme(
-            data: ThemeData(unselectedWidgetColor: Colors.white),
-            child: Checkbox(
-              value: _rememberMe,
-              checkColor: Color.fromRGBO(115, 44, 30, 0.81),
-              activeColor: Colors.white,
-              onChanged: (value) {
-                setState(() {
-                  _rememberMe = value;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildForgotPasswordBtn() {
-    return Container(
-      alignment: Alignment.center,
-      child: FlatButton(
-        onPressed: () => goToForgetPWD(),
-        padding: EdgeInsets.only(right: 0.0),
-        child: Text(
-          'Mot de passe oublié ?',
-          style: kLabelStyle,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLoginBtn() {
+  Widget _buildChangePWDBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: goToHomePage,
+        onPressed: goToProfilePage,
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         color: Color.fromRGBO(115, 44, 30, 0.81),
         child: Text(
-          'Valider',
+          'Changer mon mot de passe',
           style: TextStyle(
             color: Colors.white,
             letterSpacing: 1.5,
-            fontSize: 18.0,
+            fontSize: 16.0,
             fontWeight: FontWeight.bold,
             fontFamily: 'OpenSans',
           ),
@@ -209,6 +109,22 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('profile',
+            style: TextStyle(
+              color: Colors.white,
+            )),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              print('click on search');
+            },
+          )
+        ],
+      ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: GestureDetector(
@@ -242,28 +158,17 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.symmetric(
                     horizontal: 40.0,
-                    vertical: 50.0,
+                    vertical: 120.0,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 30.0),
-                      Image(
-                        image:
-                            AssetImage('assets/images/logo/phoikos_title.png'),
-                      ),
-                      SizedBox(height: 10.0),
-                      _buildSignupPage(),
+                      _buildPasswordTF(),
                       SizedBox(
                         height: 30.0,
                       ),
-
-                      _buildEmailTF(),
-                      _buildPasswordTF(),
-                      _buildRememberMeCheckbox(),
-                      _buildLoginBtn(),
-                      _buildForgotPasswordBtn(),
-                      //_buildSignupBtn(),
+                      _buildPasswordIsOkTF(),
+                      _buildChangePWDBtn(),
                     ],
                   ),
                 ),
@@ -275,31 +180,9 @@ class _LoginPageWidgetState extends State<LoginPageWidget> {
     );
   }
 
-  void goToHomePage() {
-    String mail = textMail.text.trim();
-    String mdp1 = textMdp.text.trim();
-
-    if (mail != "") {
-      if (mdp1 != "") {
-        FirestoreUserPhoikos().connectToAccount(
-            mail, mdp1); //trim pour enlever les espaces en trop
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) {
-          return MainPageWidget();
-        }));
-      }
-    }
-  }
-
-  void goToSignUpPage() {
+  void goToProfilePage() {
     Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return SignUpPageWidget();
-    }));
-  }
-
-  goToForgetPWD() {
-    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-      return ForgetPasswordPageWidget();
+      return ProfilePageWidget();
     }));
   }
 }

@@ -1,11 +1,12 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:phoikos/page/partner_page.dart';
+import 'package:phoikos/page/phoikos_team_page.dart';
+import 'package:phoikos/page/profile_page.dart';
+import 'package:phoikos/page/search_page.dart';
 import 'package:phoikos/screen/favorite_screen.dart';
 import 'package:phoikos/screen/home_screen.dart';
 import 'package:phoikos/screen/map_screen.dart';
 import 'package:phoikos/screen/note_screen.dart';
-import 'package:phoikos/screen/profile_screen.dart';
-import 'package:phoikos/utils/colors.dart';
 
 class MainPageWidget extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class _MainPageWidgetState extends State<MainPageWidget> {
   final FavoriteScreenWidget _favoriteScreenWidget = FavoriteScreenWidget();
   final MapScreenWidget _mapScreenWidget = MapScreenWidget();
   final NoteScreenWidget _noteScreenWidget = NoteScreenWidget();
-  final ProfileScreenWidget _profileScreenWidget = ProfileScreenWidget();
 
   //final ArticleScreenWidget _articleScreenWidget = ArticleScreenWidget();
 
@@ -33,27 +33,94 @@ class _MainPageWidgetState extends State<MainPageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        key: _bottomNavigationKey,
-        index: _pageIndex,
-        height: 60.0,
-        items: <Widget>[
-          Icon(Icons.home, size: 17),
-          Icon(Icons.favorite_border, size: 17),
-          Icon(Icons.map, size: 17),
-          Icon(Icons.note, size: 17),
-          Icon(Icons.tag_faces, size: 17),
+      appBar: AppBar(
+        title: appBarName(),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+        automaticallyImplyLeading: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              goToSearchPage();
+            },
+          )
         ],
-        color: PColors.paleGreen,
-        backgroundColor: Color(0xFF5a9216), //0xFF90AB77
-        buttonBackgroundColor: Color(0xFFFFFFE3),
-        animationCurve: Curves.easeInOut,
-        animationDuration: Duration(milliseconds: 300),
-        onTap: (int index) {
-          setState(() {
-            _pageIndex = index;
-          });
-        },
+      ),
+      drawer: Container(
+        width: 180,
+        child: Drawer(
+          child: Container(
+            color: Color.fromRGBO(23, 69, 58, 0.81),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(Icons.arrow_back, color: Colors.white),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                    title: Text(
+                      'Nos partenaires',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return PartnerPagePageWidget();
+                      }));
+                    }),
+                ListTile(
+                    title: Text(
+                      'La team Phoïkos',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return PhoikosTeamPagePageWidget();
+                      }));
+                    }),
+                ListTile(
+                    title: Text(
+                      'Mon profil',
+                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ProfilePageWidget();
+                      }));
+                    })
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+            // sets the background color of the `BottomNavigationBar`
+            canvasColor: Color.fromRGBO(24, 76, 61, 0.7)),
+        child: BottomNavigationBar(
+          elevation: 8.0,
+          selectedItemColor: Color.fromRGBO(228, 101, 76, 0.81),
+          unselectedItemColor: Colors.white,
+          currentIndex: _pageIndex,
+          onTap: (value) {
+            _pageIndex = value;
+            setState(() {});
+          },
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_border), title: Text('')),
+            BottomNavigationBarItem(icon: Icon(Icons.map), title: Text('')),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.local_florist), title: Text('')),
+          ],
+        ),
       ),
       body: Stack(
         children: <Widget>[
@@ -61,10 +128,36 @@ class _MainPageWidgetState extends State<MainPageWidget> {
           _widgetWithOpacity(_pageIndex == 1, _favoriteScreenWidget),
           _widgetWithOpacity(_pageIndex == 2, _mapScreenWidget),
           _widgetWithOpacity(_pageIndex == 3, _noteScreenWidget),
-          _widgetWithOpacity(_pageIndex == 4, _profileScreenWidget),
         ],
       ),
     );
+  }
+
+  appBarName() {
+    if (_pageIndex == 0) {
+      return Text('Accueil',
+          style: TextStyle(
+            color: Colors.white,
+          ));
+    }
+    if (_pageIndex == 1) {
+      return Text('Favoris',
+          style: TextStyle(
+            color: Colors.white,
+          ));
+    }
+    if (_pageIndex == 2) {
+      return Text('Map',
+          style: TextStyle(
+            color: Colors.white,
+          ));
+    }
+    if (_pageIndex == 3) {
+      return Text('Notes',
+          style: TextStyle(
+            color: Colors.white,
+          ));
+    }
   }
 
   Widget _widgetWithOpacity(bool visible, Widget child) {
@@ -75,5 +168,11 @@ class _MainPageWidgetState extends State<MainPageWidget> {
         child: child,
       ),
     );
+  }
+
+  void goToSearchPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+      return SearchPageWidget();
+    }));
   }
 }

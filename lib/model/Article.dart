@@ -11,6 +11,6 @@ class Article {
       this.image); //this.id, , this.introduction, this.para_1, this.para_2, this.para_3
 
   factory Article.fromJSON(Map<String, dynamic> json) {
-    return Article(json['title'].toString(), json['intro'].toString());
+    return Article(json['title'].toString(), json['photo'].toString());
   }
 }
