@@ -8,8 +8,11 @@ import 'package:phoikos/services/image_downloader.dart';
 
 class LoadArticlesOfCategory extends StatefulWidget {
   //final String ;
-  final String markerId;
-  final ValueListenable<String> markerName;
+  //final String markerId;
+  //final ValueListenable<String> markerName;
+
+  final markerId;
+  final markerName;
 
   LoadArticlesOfCategory(this.markerName, this.markerId);
 
@@ -18,11 +21,6 @@ class LoadArticlesOfCategory extends StatefulWidget {
 }
 
 class _LoadArticlesOfCategoryState extends State<LoadArticlesOfCategory> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final db = Firestore.instance;
 
   @override
@@ -30,177 +28,84 @@ class _LoadArticlesOfCategoryState extends State<LoadArticlesOfCategory> {
     print("markerName articles page = ${widget.markerName}");
     print("markerID = ${widget.markerId}");
 
-    return FutureBuilder(
-        future: db
-            .collection("category")
-            .document(widget.markerId)
-            .collection(widget.markerName.value)
-            .getDocuments(), //db.collection("category").getDocuments(),
-        builder: (context, snapshot) {
-          //var querySnapshot = snapshot;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.markerName),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+      ),
+      body: FutureBuilder(
+          future: db
+              .collection("category")
+              .document(widget.markerId)
+              .collection(widget.markerName)
+              .getDocuments(), //db.collection("category").getDocuments(),
+          builder: (context, snapshot) {
+            //var querySnapshot = snapshot;
 
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
-            List<Article> articles = [];
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              List<Article> articles = [];
 
-            var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
+              var querySnapshot = snapshot as AsyncSnapshot<QuerySnapshot>;
 
-            querySnapshot.data.documents.forEach((element) {
-              print("dans boucle");
-              print("Article ${element.data}");
-              //print('${element.documentID}');
-              articles.add(Article.fromJSON(element.data));
-            });
+              querySnapshot.data.documents.forEach((element) {
+                print("dans boucle");
+                print("Article ${element.data}");
+                //print('${element.documentID}');
+                articles.add(Article.fromJSON(element.data));
+              });
 
-            return ListView.separated(
-              padding: EdgeInsets.only(top: 20),
-              cacheExtent: 100.0,
-              shrinkWrap: true,
-              itemCount: articles.length,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  child: Row(
-                    children: <Widget>[
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 100,
-                        height: 100,
-                        child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(8.0),
-                          child: LoadFirebaseStorageImage(
-                              articles[index].image, 10, 10, null),
-                        ),
-                      ),
-                      Expanded(
-                        child: ListTile(
-                            title: new Text(
-                          articles[index].name,
-                          style: TextStyle(color: Colors.white),
-                        )),
-                      )
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) {
-                      return ArticleScreenWidget(articles[index]);
-                    }));
-                  },
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider();
-              },
-            );
-
-            GridView.builder(
-                //padding: EdgeInsets.only(top: 20),
+              return ListView.separated(
+                padding: EdgeInsets.only(top: 20),
+                //cacheExtent: 100.0,
                 shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2),
                 itemCount: articles.length,
                 itemBuilder: (context, index) {
-                  return new Card(
-                    margin: EdgeInsets.all(15),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return ArticleScreenWidget(articles[index]);
-                        }));
-                      },
-                      child: new GridTile(
-                        footer: new Text(articles[index].name),
-                        child: LoadFirebaseStorageImage(
-                            articles[index].image, 10, 10, null),
-                      ),
-                    ),
-                  );
-
-                  /*ListView(
-                    scrollDirection: Axis.vertical,
-                    children: <Widget>[*/
-                  /*GestureDetector(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Container(
-                        child: FittedBox(
-                          child: Material(
-                            //elevation: 14.0,
-                            borderRadius: BorderRadius.circular(24.0),
-                            shadowColor: Color(0xFFC7E2AC),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  width: 250,
-                                  height: 250,
-                                  child: ClipRRect(
-                                    borderRadius:
-                                        new BorderRadius.circular(24.0),
-                                    child: LoadFirebaseStorageImage(
-                                        articles[index].image, 10, 10, null),
-                                  ),
-                                ),
-                                Text(
-                                  articles[index].name,
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );*/
-                  /*],
-                  );*/
-
-                  /*Expanded(
-                    child: ListView(
+                  return GestureDetector(
+                    child: Row(
                       children: <Widget>[
-                        new Container(
-                          child: new FlatButton(
-                              /*onPressed: () => scaffoldKey.currentState.showSnackBar(
-                                new SnackBar(
-                                    content:
-                                        new Text("You pressed Image No.$index"))),*/
-                              child: LoadFirebaseStorageImage(
-                                  articles[index].image, 10, 10, null)),
-                          //width: 100.0,
-                          //height: 100.0,
+                        SizedBox(
+                          width: 10,
                         ),
-                        Center(
-                          child: Text(
+                        Container(
+                            width: 100,
+                            height: 100,
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              child: LoadFirebaseStorageImage(
+                                  articles[index].image, 10, 10, null),
+
+                              /*Hero(
+                                tag: "un tag",
+                                child: LoadFirebaseStorageImage(
+                              )),*/
+                            )),
+                        Expanded(
+                          child: ListTile(
+                              title: new Text(
                             articles[index].name,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
+                            style: TextStyle(color: Colors.white),
+                          )),
                         )
                       ],
                     ),
-                  );*/
-
-                  /*FlatButton(
-                    //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-                        LoadFirebaseStorageImage(
-                            articles[index].image, 20, 20, null),
-                        Center(
-                          child: Text(
-                            articles[index].name,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-                    color: Color.fromRGBO(35, 66, 57, 0.94),
-                  );*/
-                });
-          }
-          return Center(child: CircularProgressIndicator());
-        });
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ArticleScreenWidget(articles[index]);
+                      }));
+                    },
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              );
+            }
+            return Center(child: CircularProgressIndicator());
+          }),
+    );
   }
 
   _goToArticlePage(Article article) {
