@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +12,7 @@ class MapScreenWidget extends StatefulWidget {
 
 class _MapScreenWidgetState extends State<MapScreenWidget>
     with SingleTickerProviderStateMixin {
+  final db = Firestore.instance;
   final Completer<GoogleMapController> _completerController = Completer();
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
@@ -20,10 +22,15 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
   AnimationController _controller;
   Animation<Offset> _offsetAnimation;
 
+  List<Marker> allMarkers = [];
+  setMarkers() {
+    return allMarkers;
+  }
+
   @override
   void initState() {
     super.initState();
-    _initDefaultMarker();
+    //_initDefaultMarker();
     _initAnimation();
   }
 
@@ -44,8 +51,64 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
     ));
   }
 
-  _initDefaultMarker() {
+  Widget loadMarkers() {
+    return StreamBuilder(
+      stream: Firestore.instance.collection('markers').snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Text('Loading maps..Please wait');
+        for (int i = 0; i < snapshot.data.documents.length; i++) {
+          allMarkers.add(
+            new Marker(
+              markerId:
+                  MarkerId(db.collection('markers').document().documentID),
+              draggable: false,
+              position: LatLng(snapshot.data.documents[i]['coords'].latitude,
+                  snapshot.data.documents[i]['coords'].longitude),
+              infoWindow: InfoWindow(
+                title: snapshot.data.documents[i][
+                    'place'] /*+
+                    snapshot.data.documents[i]['adress'] +
+                    snapshot.data.documents[i]['phone'] +
+                    snapshot.data.documents[i]['website']*/
+                ,
+              ),
+              onTap: () {
+                print(db.collection('markers').document().documentID);
+                print(snapshot.data.documents[i]['place']);
+              },
+            ),
+          );
+        }
+        return GoogleMap(
+          rotateGesturesEnabled: false,
+          scrollGesturesEnabled: true,
+          tiltGesturesEnabled: false,
+          zoomGesturesEnabled: true,
+          zoomControlsEnabled: false,
+          mapToolbarEnabled: false,
+          onTap: (position) {
+            _controller.reverse();
+
+            Future.delayed(Duration(milliseconds: 2000), () {
+              setState(() {
+                _selectedMarker = null;
+              });
+            });
+          },
+          onMapCreated: (GoogleMapController controller) {
+            _completerController.complete(controller);
+          },
+          initialCameraPosition: CameraPosition(
+              target: LatLng(48.1146285, -1.6796229), zoom: 11.0),
+          markers: Set.from(allMarkers),
+        );
+      },
+    );
+  }
+
+  /*_initDefaultMarker() {
     MarkerId id = MarkerId('Here something !');
+
     Marker marker = Marker(
       markerId: id,
       position: LatLng(48.1508, -1.6871),
@@ -58,35 +121,13 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
       },
     );
     markers[id] = marker;
-  }
+  }*/
 
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          GoogleMap(
-            rotateGesturesEnabled: false,
-            scrollGesturesEnabled: true,
-            tiltGesturesEnabled: false,
-            zoomGesturesEnabled: true,
-            zoomControlsEnabled: false,
-            mapToolbarEnabled: false,
-            onTap: (position) {
-              _controller.reverse();
-
-              Future.delayed(Duration(milliseconds: 2000), () {
-                setState(() {
-                  _selectedMarker = null;
-                });
-              });
-            },
-            onMapCreated: (GoogleMapController controller) {
-              _completerController.complete(controller);
-            },
-            initialCameraPosition: CameraPosition(
-                target: LatLng(48.1146285, -1.6796229), zoom: 11.0),
-            markers: Set<Marker>.of(markers.values),
-          ),
+          loadMarkers(),
           _selectedMarker != null
               ? Positioned(
                   bottom: 16.0,

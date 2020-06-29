@@ -95,7 +95,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.email,
-                color: Colors.black,
+                color: Colors.white,
               ),
               hintText: 'Tapez votre adresse email',
               hintStyle: kHintTextStyle,

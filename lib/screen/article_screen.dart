@@ -13,6 +13,8 @@ class ArticleScreenWidget extends StatefulWidget {
 }
 
 class _ArticleDetailPageState extends State<ArticleScreenWidget> {
+  final _saved = new Set();
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +41,8 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
     ]);
   }
 
-  Widget _buildTitleAndFav() {
+  Widget _buildTitleAndFav(bool pair) {
+    final _alreadySaved = _saved.contains(pair);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25.0),
       child: ListTile(
@@ -48,11 +51,17 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         trailing: new Icon(
-          Icons.favorite,
-          color: Color.fromRGBO(228, 101, 76, 0.81),
+          _alreadySaved ? Icons.favorite : Icons.favorite_border,
+          color: _alreadySaved ? Color.fromRGBO(228, 101, 76, 0.81) : null,
         ),
         onTap: () {
-          //here code to add or remove fav
+          setState(() {
+            if (_alreadySaved) {
+              _saved.remove(pair);
+            } else {
+              _saved.add(pair);
+            }
+          });
         },
       ),
     );
@@ -113,14 +122,6 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
         title: Text(widget.article.name),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              print('click on search');
-            },
-          )
-        ],
       ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -161,7 +162,7 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
                       SizedBox(
                         height: 1.0,
                       ),
-                      _buildTitleAndFav(),
+                      _buildTitleAndFav(null),
                       _buildIntro(),
                       _buildPara1(),
                       _buildPara2(),
