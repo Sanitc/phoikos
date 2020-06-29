@@ -5,6 +5,8 @@ import 'package:phoikos/model/Category.dart';
 import 'package:phoikos/page/category_page.dart';
 import 'package:phoikos/services/image_downloader.dart';
 
+import 'article_screen.dart';
+
 //enum WidgetMarker { }
 
 class HomeScreenWidget extends StatefulWidget {
@@ -153,45 +155,13 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       width: 150,
                       child: Card(
                         child: InkWell(
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (context) {
-                              return Scaffold(
-                                appBar: AppBar(
-                                  title: Text("${articles[index].name}"),
-                                  centerTitle: true,
-                                  backgroundColor:
-                                      Color.fromRGBO(23, 69, 58, 0.81),
-                                ),
-                                body: Column(
-                                  children: <Widget>[
-                                    Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 100),
-                                        child: LoadFirebaseStorageImage(
-                                            articles[index].image,
-                                            120,
-                                            120,
-                                            null)),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          top: 20, left: 15, right: 15),
-                                      child: Center(
-                                        child: Column(
-                                          children: <Widget>[
-                                            _build(articles[index].intro),
-                                            _build(articles[index].para_1),
-                                            _build(articles[index].para_2),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                              // ArticleScreenWidget(articles[index]
-                            }));
-                          },
+                          onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return ArticleScreenWidget(articles[index]);
+                            /*HeroTry(
+                                            articles: articles, index: index);*/
+                          })),
                           child: GridTile(
                             child: Center(
                               child: Column(
@@ -280,6 +250,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     child: Container(
                       height: 60,
                       child: Card(
+                        color: Color.fromRGBO(228, 101, 76, 0.81),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -294,7 +265,8 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                                     "${categories[i].name}",
                                     style: TextStyle(
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 16),
+                                        fontSize: 16,
+                                        color: Colors.white),
                                   ),
                                 ),
                               ),
