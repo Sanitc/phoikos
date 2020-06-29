@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/model/Category.dart';
 import 'package:phoikos/screen/article_screen.dart';
+import 'package:phoikos/services/image_downloader.dart';
 
 class CategoryPageWidget extends StatefulWidget {
   final Category category;
@@ -64,7 +65,7 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
         ),*/
         title: Text(widget.category.name),
         centerTitle: true,
-        backgroundColor: Color(0xFF5a9216),
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
         //automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -76,6 +77,18 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
         ],
       ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.5, 0.9],
+            colors: [
+              Color.fromRGBO(23, 69, 58, 0.81),
+              Color.fromRGBO(46, 137, 116, 0.81),
+              Color.fromRGBO(65, 236, 133, 0.56)
+            ],
+          ),
+        ),
         padding: const EdgeInsets.all(15.0),
         child: FutureBuilder(
           future: db
@@ -103,17 +116,55 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
                       crossAxisCount: 2),
                   itemCount: articles.length,
                   itemBuilder: (context, index) {
+                    /*Hero hero = Hero(
+                      tag: "coucou",
+                      child: LoadFirebaseStorageImage(
+                          articles[index].image, 120, 120, null),
+                    );*/
                     return Card(
                       child: InkWell(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ArticleScreenWidget(articles[index]);
+                        /*onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return HeroTry(articles: articles, index: index);
+                        })),*/
+                        /*onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            HeroTry(
+                              articles: articles,
+                              index: index,
+                            );
                           }));
-                        },
+                        },*/
                         child: GridTile(
                           child: Center(
-                            child: Text(articles[index].name),
+                            child: Column(
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10),
+                                  child: Hero(
+                                    tag: "${articles[index].name}",
+                                    child: GestureDetector(
+                                      onTap: () => Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                        return ArticleScreenWidget(
+                                            articles[index]);
+                                        /*HeroTry(
+                                            articles: articles, index: index);*/
+                                      })),
+                                      child: LoadFirebaseStorageImage(
+                                          articles[index].image,
+                                          120,
+                                          150,
+                                          null),
+                                    ),
+                                  ),
+                                ),
+                                Text(articles[index].name),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -144,7 +195,23 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
     );
   }
 
-  /*Stream<QuerySnapshot> getArticleList(BuildContext context) async* {
+  Widget _build(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: text,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+/*Stream<QuerySnapshot> getArticleList(BuildContext context) async* {
     yield* db
         .collection("category")
         .document(widget.name)
@@ -208,6 +275,64 @@ class _CategoryPageWidgetState extends State<CategoryPageWidget> {
       },
     );
   }*/
+}
+
+class HeroTry extends StatelessWidget {
+  List<Article> articles;
+  int index;
+
+  HeroTry({this.articles, this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("${articles[index].name}"),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(23, 69, 58, 0.81),
+      ),
+      body: Column(
+        children: <Widget>[
+          Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: Hero(
+                tag: "${articles[index].name}",
+                child: LoadFirebaseStorageImage(
+                    articles[index].image, 100, 200, null),
+              )),
+          Padding(
+            padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  _build(articles[index].intro),
+                  _build(articles[index].para_1),
+                  _build(articles[index].para_2),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _build(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: text,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /*Widget _addArticle(BuildContext context) {

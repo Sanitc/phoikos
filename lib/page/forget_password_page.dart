@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phoikos/page/main_page.dart';
+import 'package:phoikos/services/firestore_user.dart';
 import 'package:phoikos/utils/constants.dart';
 
 import 'login_page.dart';
@@ -13,6 +14,14 @@ class ForgetPasswordPageWidget extends StatefulWidget {
 }
 
 class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
+  TextEditingController _mailpwd;
+
+  @override
+  void initState() {
+    super.initState();
+    _mailpwd = TextEditingController();
+  }
+
   Widget _buildMDPOubliePage() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,6 +50,7 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextField(
+            controller: _mailpwd,
             keyboardType: TextInputType.emailAddress,
             style: TextStyle(
               color: Colors.grey,
@@ -68,7 +78,12 @@ class _ForgetPasswordPageWidgetState extends State<ForgetPasswordPageWidget> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: goToHomePage,
+        onPressed: () {
+          if (_mailpwd != null && _mailpwd.text != "") {
+            FirestoreUserPhoikos().forgetPassword(_mailpwd.text);
+            Navigator.pop(context);
+          }
+        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),

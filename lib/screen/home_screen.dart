@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:phoikos/model/Article.dart';
 import 'package:phoikos/model/Category.dart';
-import 'package:phoikos/services/articles_page_accueil.dart';
+import 'package:phoikos/page/category_page.dart';
 import 'package:phoikos/services/image_downloader.dart';
 
 //enum WidgetMarker { }
@@ -15,8 +15,8 @@ class HomeScreenWidget extends StatefulWidget {
 class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   final db = Firestore.instance;
 
-  final markerName = new ValueNotifier("salle_de_bain");
-  final markerId = new ValueNotifier("JgW5ha79tm3UBI1r5MPm");
+  String markerName = "";
+  String markerId = "";
 
   @override
   void initState() {
@@ -26,6 +26,9 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
       });
     });
 
+    /* markerName = "salle_de_bain";
+    markerId = "JgW5ha79tm3UBI1r5MPm";
+*/
     /*db
         .collection("category")
         .document("JgW5ha79tm3UBI1r5MPm")
@@ -47,8 +50,8 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
 
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
         padding: const EdgeInsets.all(15.0),
-        //height: 800,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -61,7 +64,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             ],
           ),
         ),
-        child: Column(
+        child: ListView(
           //column
           children: <Widget>[
             Align(
@@ -72,9 +75,10 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                       color: Colors.white,
                     ))),
             //TODO affichage nouveaux articles
-            /*Container(
+            Container(
+              height: 150,
               child: getNewArticles(context),
-            ),*/
+            ),
             Container(
                 margin: const EdgeInsets.only(top: 20.0),
                 child: Align(
@@ -91,7 +95,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                 child: getChipCategoryName(context),
               ),
             ),
-            LoadArticlesOfCategory(markerName, category.id)
+            //LoadArticlesOfCategory(markerName, markerId)
             //blockGetArticlesOfTheCategory(category))
             //Expanded(child: _categoryButtonView()), //LoadFirebaseStorageImage()
           ],
@@ -135,29 +139,96 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             return ListView.builder(
                 //padding: EdgeInsets.only(top: 20),
                 shrinkWrap: true,
-                //scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.horizontal,
                 //gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 //    crossAxisCount: 3),
                 itemCount: articles.length,
                 itemBuilder: (context, index) {
+                  /*Hero hero = Hero(
+                    tag: articles[index].image,
+                    child: LoadFirebaseStorageImage(
+                        articles[index].image, 120, 120, null),
+                  );*/
                   return Container(
-                    width: 20,
-                    child: Card(
-                      //margin: EdgeInsets.all(15),
-                      child: InkWell(
-                        //onTap: ,
-                        child: new GridTile(
-                          footer: new Text(articles[index].name),
-                          child: LoadFirebaseStorageImage(
-                              articles[index].image, 10, 10, null),
+                      width: 150,
+                      child: Card(
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (context) {
+                              return Scaffold(
+                                appBar: AppBar(
+                                  title: Text("${articles[index].name}"),
+                                  centerTitle: true,
+                                  backgroundColor:
+                                      Color.fromRGBO(23, 69, 58, 0.81),
+                                ),
+                                body: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 100),
+                                        child: LoadFirebaseStorageImage(
+                                            articles[index].image,
+                                            120,
+                                            120,
+                                            null)),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: 20, left: 15, right: 15),
+                                      child: Center(
+                                        child: Column(
+                                          children: <Widget>[
+                                            _build(articles[index].intro),
+                                            _build(articles[index].para_1),
+                                            _build(articles[index].para_2),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                              // ArticleScreenWidget(articles[index]
+                            }));
+                          },
+                          child: GridTile(
+                            child: Center(
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 10, bottom: 10),
+                                    child: LoadFirebaseStorageImage(
+                                        articles[index].image, 100, 120, null),
+                                  ),
+                                  Text(articles[index].name),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
+                      ));
                 });
           }
           return Center(child: CircularProgressIndicator());
         });
+  }
+
+  Widget _build(String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.0),
+      child: RichText(
+        textAlign: TextAlign.justify,
+        text: TextSpan(
+          text: text,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _createNewArticles() {
@@ -197,78 +268,169 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
             categories.add(Category.fromJSON(element.documentID, element.data));
             print("element.data ${element.data}");
           });
-          return ValueListenableBuilder<String>(
-            valueListenable: markerName,
-            builder: (context, value, child) {
-              return Wrap(
-                spacing: 20,
-                children: <Widget>[
-                  ActionChip(
-                      label: Text(
-                        categories[0].name,
-                        style: TextStyle(
-                          color: Colors.white,
+
+          return SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: ListView.builder(
+                itemCount: categories.length,
+                itemBuilder: (context, i) {
+                  return InkWell(
+                    child: Container(
+                      height: 60,
+                      child: Card(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(5),
+                              height: 100,
+                              width: 130,
+                              child: Center(
+                                child: Hero(
+                                  tag: categories[i].name,
+                                  child: Text(
+                                    "${categories[i].name}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                      onPressed: () {
-                        markerName.value = "${categories[0].collection}";
-                        LoadArticlesOfCategory(markerName, categories[0].id);
-                        /*return LoadArticlesOfCategory(
-                                categories[0].collection, categories[0].id);*/
-                      }),
-                  ActionChip(
-                      label: Text(
-                        categories[1].name,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                      onPressed: () {
-                        markerName.value = "${categories[1].collection}";
-                        LoadArticlesOfCategory(markerName, categories[1].id);
-                      }),
-                  ActionChip(
-                      label: Text(
-                        categories[2].name,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                      onPressed: () {
-                        markerName.value = "${categories[2].collection}";
-                        LoadArticlesOfCategory(markerName, categories[2].id);
-                      }),
-                  ActionChip(
-                      label: Text(
-                        categories[3].name,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                      onPressed: () {
-                        markerName.value = "${categories[3].collection}";
-                        LoadArticlesOfCategory(markerName, categories[3].id);
-                      }),
-                  ActionChip(
-                      label: Text(
-                        categories[4].name,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
-                      onPressed: () {
-                        markerName.value = "${categories[4].collection}";
-                        LoadArticlesOfCategory(markerName, categories[4].id);
-                      })
-                ],
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (context) =>
+                              CategoryPageWidget(categories[i])));
+                    },
+                  );
+                },
+              ),
+            ),
+          );
+          /*
+          return ListView.builder(
+            itemCount: categories.length,
+            itemBuilder: (context, i) {
+              return InkWell(
+                child: Container(
+                  child: Card(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(5),
+                          height: 100,
+                          width: 125,
+                          child: Hero(
+                            tag: categories[i].name,
+                            child: Text("${categories[i].name}"),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LoadArticlesOfCategory(
+                          markerName, categories[i].id)));
+                },
               );
             },
           );
+          */
+
+          /*
+          return Wrap(
+            spacing: 20,
+            children: <Widget>[
+              ActionChip(
+                  label: Text(
+                    categories[0].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    markerName = "${categories[0].collection}";
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoadArticlesOfCategory(
+                                markerName, categories[0].id)));
+                    //return LoadArticlesOfCategory(markerName, categories[0].id);
+                    /*return LoadArticlesOfCategory(
+                                categories[0].collection, categories[0].id);*/
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[1].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    markerName = "${categories[1].collection}";
+                    print("$markerName");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoadArticlesOfCategory(
+                                markerName, categories[1].id)));
+                    //return LoadArticlesOfCategory(markerName, categories[1].id);
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[2].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    markerName = "${categories[2].collection}";
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LoadArticlesOfCategory(
+                                markerName, categories[2].id)));
+                    //return LoadArticlesOfCategory(markerName, categories[2].id);
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[3].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    markerName = "${categories[3].collection}";
+                    return LoadArticlesOfCategory(markerName, categories[3].id);
+                  }),
+              ActionChip(
+                  label: Text(
+                    categories[4].name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  backgroundColor: Color.fromRGBO(35, 66, 57, 0.94),
+                  onPressed: () {
+                    markerName = "${categories[4].collection}";
+                    return LoadArticlesOfCategory(markerName, categories[4].id);
+                  })
+            ],
+          );
+          */
         }
         return Center(child: CircularProgressIndicator());
       },
