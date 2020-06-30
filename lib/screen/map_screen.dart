@@ -65,13 +65,8 @@ class _MapScreenWidgetState extends State<MapScreenWidget>
               position: LatLng(snapshot.data.documents[i]['coords'].latitude,
                   snapshot.data.documents[i]['coords'].longitude),
               infoWindow: InfoWindow(
-                title: snapshot.data.documents[i][
-                    'place'] /*+
-                    snapshot.data.documents[i]['adress'] +
-                    snapshot.data.documents[i]['phone'] +
-                    snapshot.data.documents[i]['website']*/
-                ,
-              ),
+                  title: snapshot.data.documents[i]['place'],
+                  snippet: snapshot.data.documents[i]['adress']),
               onTap: () {
                 print(db.collection('markers').document().documentID);
                 print(snapshot.data.documents[i]['place']);
