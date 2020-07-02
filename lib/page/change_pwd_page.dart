@@ -145,11 +145,13 @@ class _ChangePWDPageWidgetState extends State<ChangePWDPageWidget> {
                       Color.fromRGBO(65, 236, 133, 0.56)
                     ],
                   ),
-                  /*image: DecorationImage(
+                  image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.2), BlendMode.dstATop),
                     image:
                         AssetImage("assets/images/background/background.png"),
                     fit: BoxFit.cover,
-                  ),*/
+                  ),
                 ),
               ),
               Container(

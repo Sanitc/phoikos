@@ -73,7 +73,7 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
       child: RichText(
         textAlign: TextAlign.justify,
         text: TextSpan(
-          text: widget.article.intro,
+          text: widget.article.intro + "\n",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -89,7 +89,7 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
       child: RichText(
         textAlign: TextAlign.justify,
         text: TextSpan(
-          text: widget.article.para_1,
+          text: widget.article.para_1 + "\n",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -105,7 +105,7 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
       child: RichText(
         textAlign: TextAlign.justify,
         text: TextSpan(
-          text: widget.article.para_2,
+          text: widget.article.para_2 + "\n",
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -143,11 +143,13 @@ class _ArticleDetailPageState extends State<ArticleScreenWidget> {
                       Color.fromRGBO(65, 236, 133, 0.56)
                     ],
                   ),
-                  /*image: DecorationImage(
+                  image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.2), BlendMode.dstATop),
                     image:
                         AssetImage("assets/images/background/background.png"),
                     fit: BoxFit.cover,
-                  ),*/
+                  ),
                 ),
               ),
               Container(

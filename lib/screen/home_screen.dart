@@ -65,6 +65,12 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
               Color.fromRGBO(65, 236, 133, 0.56)
             ],
           ),
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.2), BlendMode.dstATop),
+            image: AssetImage("assets/images/background/background.png"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: ListView(
           //column
@@ -250,7 +256,7 @@ class _HomeScreenWidgetState extends State<HomeScreenWidget> {
                     child: Container(
                       height: 60,
                       child: Card(
-                        color: Color.fromRGBO(228, 101, 76, 0.81),
+                        color: Color.fromRGBO(115, 44, 30, 0.81),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
