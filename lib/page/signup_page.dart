@@ -95,7 +95,7 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(
                 Icons.email,
-                color: Colors.black,
+                color: Colors.white,
               ),
               hintText: 'Tapez votre adresse email',
               hintStyle: kHintTextStyle,
@@ -111,6 +111,10 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Text(
+          '\nPréférez minimum 10 caractères,majuscules,caractères spéciaux\n',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         Text(
           'Mot de Passe',
           style: kLabelStyle,
@@ -234,11 +238,13 @@ class _SignUpPageWidgetState extends State<SignUpPageWidget> {
                       Color.fromRGBO(65, 236, 133, 0.56)
                     ],
                   ),
-                  /*image: DecorationImage(
+                  image: DecorationImage(
+                    colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.2), BlendMode.dstATop),
                     image:
                         AssetImage("assets/images/background/background.png"),
                     fit: BoxFit.cover,
-                  ),*/
+                  ),
                 ),
               ),
               Container(

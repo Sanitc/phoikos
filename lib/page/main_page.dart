@@ -14,8 +14,6 @@ class MainPageWidget extends StatefulWidget {
 }
 
 class _MainPageWidgetState extends State<MainPageWidget> {
-  final GlobalKey _bottomNavigationKey = GlobalKey();
-
   final HomeScreenWidget _homeScreenWidget = HomeScreenWidget();
   final FavoriteScreenWidget _favoriteScreenWidget = FavoriteScreenWidget();
   final MapScreenWidget _mapScreenWidget = MapScreenWidget();

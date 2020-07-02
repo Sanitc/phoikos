@@ -40,6 +40,12 @@ class _PhoikosTeamPageWidgetState extends State<PhoikosTeamPagePageWidget> {
               Color.fromRGBO(65, 236, 133, 0.56)
             ],
           ),
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.2), BlendMode.dstATop),
+            image: AssetImage("assets/images/background/background.png"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Column(
           children: <Widget>[
